@@ -138,7 +138,11 @@ supply the look:
   piece; the admin dashboard's add/edit-trip form drops from two fixed columns to one
   below 560px (two columns left each field only ~130px - too cramped to use); and the
   floating chat widget's panel width is clamped with `min(320px, 100%)` plus
-  side-anchored positioning below 420px so it can never overflow a narrow viewport.
+  side-anchored positioning below 420px so it can never overflow a narrow viewport;
+  and each hotel-list row in the admin dashboard's "manage hotels" panel (name,
+  description, and two action buttons side by side) stacks the text above
+  full-width buttons below 560px instead of squeezing the description into an
+  unreadable ragged sliver next to them.
 
 ### Language switching (English / French)
 
@@ -325,6 +329,7 @@ into by this work - branches are merged in by hand, in order:
 → `admin-dashboard-i18n-and-polish` → `i18n-trip-and-booking-detail`
 → `cinematic-editorial-homepage` → `fancy-hero-search-bar` → `custom-search-pill`
 → `admin-dashboard-spacing-polish` → `summer-blue-theme` → `responsive-polish`
+→ `admin-hotel-list-responsive`
 
 ## Simplifications and next steps
 
