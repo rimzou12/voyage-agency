@@ -16,8 +16,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
  * Stateless JWT auth: no sessions, no CSRF (nothing to forge without a session
  * cookie), no anonymous principal (so an unauthenticated {@code @AuthenticationPrincipal}
  * resolves to {@code null} rather than Spring Security's usual "anonymousUser" string).
- * Browsing (trips, a booking's state, its SSE stream) stays public; creating, joining,
- * or leaving a group booking requires a valid token.
+ * Browsing (trips, a booking's state, its SSE stream, hotel reviews) stays public;
+ * creating, joining, or leaving a group booking - and writing a hotel review -
+ * requires a valid token.
  */
 @Configuration
 @EnableWebSecurity
@@ -43,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/trips/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/group-bookings/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/hotels/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

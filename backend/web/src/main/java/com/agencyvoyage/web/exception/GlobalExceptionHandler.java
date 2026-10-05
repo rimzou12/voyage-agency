@@ -1,11 +1,14 @@
 package com.agencyvoyage.web.exception;
 
+import com.agencyvoyage.application.exception.AlreadyReviewedHotelException;
 import com.agencyvoyage.application.exception.ConversationAccessDeniedException;
 import com.agencyvoyage.application.exception.EmailAlreadyRegisteredException;
 import com.agencyvoyage.application.exception.GroupBookingNotFoundException;
 import com.agencyvoyage.application.exception.HotelNotFoundException;
+import com.agencyvoyage.application.exception.HotelReviewNotFoundException;
 import com.agencyvoyage.application.exception.InvalidCredentialsException;
 import com.agencyvoyage.application.exception.NotAnAdminException;
+import com.agencyvoyage.application.exception.NotReviewAuthorException;
 import com.agencyvoyage.application.exception.TripNotFoundException;
 import com.agencyvoyage.domain.exception.DomainException;
 import com.agencyvoyage.web.dto.ErrorResponse;
@@ -18,13 +21,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({TripNotFoundException.class, GroupBookingNotFoundException.class, HotelNotFoundException.class})
+    @ExceptionHandler({
+        TripNotFoundException.class,
+        GroupBookingNotFoundException.class,
+        HotelNotFoundException.class,
+        HotelReviewNotFoundException.class
+    })
     public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ex.getMessage()));
     }
 
-    @ExceptionHandler(EmailAlreadyRegisteredException.class)
-    public ResponseEntity<ErrorResponse> handleEmailAlreadyRegistered(EmailAlreadyRegisteredException ex) {
+    @ExceptionHandler({EmailAlreadyRegisteredException.class, AlreadyReviewedHotelException.class})
+    public ResponseEntity<ErrorResponse> handleConflict(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(ex.getMessage()));
     }
 
@@ -33,8 +41,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(ex.getMessage()));
     }
 
-    @ExceptionHandler(NotAnAdminException.class)
-    public ResponseEntity<ErrorResponse> handleNotAnAdmin(NotAnAdminException ex) {
+    @ExceptionHandler({NotAnAdminException.class, NotReviewAuthorException.class})
+    public ResponseEntity<ErrorResponse> handleForbidden(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(ex.getMessage()));
     }
 

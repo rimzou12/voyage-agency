@@ -1,9 +1,11 @@
 package com.agencyvoyage.web.config;
 
+import com.agencyvoyage.application.port.in.AddHotelReviewUseCase;
 import com.agencyvoyage.application.port.in.AddHotelUseCase;
 import com.agencyvoyage.application.port.in.ConfirmHotelReservationUseCase;
 import com.agencyvoyage.application.port.in.CreateGroupBookingUseCase;
 import com.agencyvoyage.application.port.in.CreateTripUseCase;
+import com.agencyvoyage.application.port.in.DeleteHotelReviewUseCase;
 import com.agencyvoyage.application.port.in.DeleteHotelUseCase;
 import com.agencyvoyage.application.port.in.DeleteTripUseCase;
 import com.agencyvoyage.application.port.in.FinalizeGroupBookingUseCase;
@@ -16,6 +18,7 @@ import com.agencyvoyage.application.port.in.JoinWaitlistUseCase;
 import com.agencyvoyage.application.port.in.LeaveGroupBookingUseCase;
 import com.agencyvoyage.application.port.in.LeaveWaitlistUseCase;
 import com.agencyvoyage.application.port.in.ListContactMessagesUseCase;
+import com.agencyvoyage.application.port.in.ListHotelReviewsUseCase;
 import com.agencyvoyage.application.port.in.ListHotelsForTripUseCase;
 import com.agencyvoyage.application.port.in.ListTripsUseCase;
 import com.agencyvoyage.application.port.in.LoginUseCase;
@@ -23,6 +26,7 @@ import com.agencyvoyage.application.port.in.RegisterUserUseCase;
 import com.agencyvoyage.application.port.in.ReplyToConversationUseCase;
 import com.agencyvoyage.application.port.in.RequestHotelReservationUseCase;
 import com.agencyvoyage.application.port.in.SendContactMessageUseCase;
+import com.agencyvoyage.application.port.in.UpdateHotelReviewUseCase;
 import com.agencyvoyage.application.port.in.UpdateHotelUseCase;
 import com.agencyvoyage.application.port.in.UpdateTripUseCase;
 import com.agencyvoyage.application.port.out.AuditTrailRepository;
@@ -31,14 +35,17 @@ import com.agencyvoyage.application.port.out.EmailSender;
 import com.agencyvoyage.application.port.out.GroupBookingEventPublisher;
 import com.agencyvoyage.application.port.out.GroupBookingRepository;
 import com.agencyvoyage.application.port.out.HotelRepository;
+import com.agencyvoyage.application.port.out.HotelReviewRepository;
 import com.agencyvoyage.application.port.out.PasswordHasher;
 import com.agencyvoyage.application.port.out.TokenIssuer;
 import com.agencyvoyage.application.port.out.TripRepository;
 import com.agencyvoyage.application.port.out.UserRepository;
+import com.agencyvoyage.application.service.AddHotelReviewService;
 import com.agencyvoyage.application.service.AddHotelService;
 import com.agencyvoyage.application.service.ConfirmHotelReservationService;
 import com.agencyvoyage.application.service.CreateGroupBookingService;
 import com.agencyvoyage.application.service.CreateTripService;
+import com.agencyvoyage.application.service.DeleteHotelReviewService;
 import com.agencyvoyage.application.service.DeleteHotelService;
 import com.agencyvoyage.application.service.DeleteTripService;
 import com.agencyvoyage.application.service.FinalizeGroupBookingService;
@@ -50,6 +57,7 @@ import com.agencyvoyage.application.service.JoinWaitlistService;
 import com.agencyvoyage.application.service.LeaveGroupBookingService;
 import com.agencyvoyage.application.service.LeaveWaitlistService;
 import com.agencyvoyage.application.service.ListContactMessagesService;
+import com.agencyvoyage.application.service.ListHotelReviewsService;
 import com.agencyvoyage.application.service.ListHotelsForTripService;
 import com.agencyvoyage.application.service.LoginService;
 import com.agencyvoyage.application.service.RegisterUserService;
@@ -57,6 +65,7 @@ import com.agencyvoyage.application.service.ReplyToConversationService;
 import com.agencyvoyage.application.service.RequestHotelReservationService;
 import com.agencyvoyage.application.service.SendContactMessageService;
 import com.agencyvoyage.application.service.TripQueryService;
+import com.agencyvoyage.application.service.UpdateHotelReviewService;
 import com.agencyvoyage.application.service.UpdateHotelService;
 import com.agencyvoyage.application.service.UpdateTripService;
 import java.time.Clock;
@@ -227,5 +236,26 @@ public class UseCaseWiringConfig {
     @Bean
     public DeleteHotelUseCase deleteHotelUseCase(HotelRepository hotelRepository) {
         return new DeleteHotelService(hotelRepository);
+    }
+
+    @Bean
+    public AddHotelReviewUseCase addHotelReviewUseCase(HotelReviewRepository hotelReviewRepository, Clock clock) {
+        return new AddHotelReviewService(hotelReviewRepository, clock);
+    }
+
+    @Bean
+    public UpdateHotelReviewUseCase updateHotelReviewUseCase(
+            HotelReviewRepository hotelReviewRepository, Clock clock) {
+        return new UpdateHotelReviewService(hotelReviewRepository, clock);
+    }
+
+    @Bean
+    public DeleteHotelReviewUseCase deleteHotelReviewUseCase(HotelReviewRepository hotelReviewRepository) {
+        return new DeleteHotelReviewService(hotelReviewRepository);
+    }
+
+    @Bean
+    public ListHotelReviewsUseCase listHotelReviewsUseCase(HotelReviewRepository hotelReviewRepository) {
+        return new ListHotelReviewsService(hotelReviewRepository);
     }
 }
