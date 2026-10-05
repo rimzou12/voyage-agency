@@ -193,11 +193,14 @@ Reframing the kata's original group-purchase stories for trips:
   involved, it is a plain human-to-admin messaging UI.
 - An admin can create, edit and delete trips in the catalog (destination, dates,
   participant limits, booking deadline, pricing tiers) and curate a hotel catalog per
-  trip (name, description, photo URLs - add, edit, delete) from a dedicated `/admin`
-  dashboard - trips and hotels are visible to everyone browsing, but only an admin can
-  change either. Deleting a trip or hotel asks for confirmation first and can't be
-  undone; deleting a trip doesn't touch any group bookings already made for it (no
-  foreign-key link from booking to trip - see Simplifications).
+  trip (name, description, photo URLs, amenities - add, edit, delete) from a dedicated
+  `/admin` dashboard - trips and hotels are visible to everyone browsing, but only an
+  admin can change either. Amenities are a free-text tag list (e.g. "Restaurant",
+  "Pool", "Free Wi-Fi") rather than a fixed enum, entered one per line the same way
+  photo URLs already are, and shown as small pill badges on both the admin's hotel
+  list and the public trip-detail page. Deleting a trip or hotel asks for confirmation
+  first and can't be undone; deleting a trip doesn't touch any group bookings already
+  made for it (no foreign-key link from booking to trip - see Simplifications).
   Logging in as an admin goes straight to the dashboard instead of the trip list.
 - The trip catalog can be searched by name/description and filtered to trips running on
   a chosen date (i.e. that date falls within the trip's departure-return window); both
@@ -253,7 +256,7 @@ The frontend's API base URL is hardcoded to `http://localhost:8080` in
 | GET    | `/api/contact-messages/conversations/{userId}` | required | Get one thread, oldest first - the thread's own customer or any admin, `403` otherwise |
 | GET    | `/api/contact-messages`                   | admin only | List every message across every conversation, newest first - `403` for a non-admin |
 | GET    | `/api/trips/{tripId}/hotels`              | -    | List the hotel catalog for a trip |
-| POST   | `/api/trips/{tripId}/hotels`              | admin only | Add a hotel to a trip's catalog (`{name, description, photoUrls}`) - `403` for a non-admin |
+| POST   | `/api/trips/{tripId}/hotels`              | admin only | Add a hotel to a trip's catalog (`{name, description, photoUrls, amenities}`) - `403` for a non-admin |
 | PUT    | `/api/trips/{tripId}/hotels/{hotelId}`    | admin only | Edit a hotel (same body as `POST`) - `403` for a non-admin, `404` if unknown |
 | DELETE | `/api/trips/{tripId}/hotels/{hotelId}`    | admin only | Remove a hotel from a trip's catalog - `403` for a non-admin, `404` if unknown |
 
@@ -329,7 +332,7 @@ into by this work - branches are merged in by hand, in order:
 → `admin-dashboard-i18n-and-polish` → `i18n-trip-and-booking-detail`
 → `cinematic-editorial-homepage` → `fancy-hero-search-bar` → `custom-search-pill`
 → `admin-dashboard-spacing-polish` → `summer-blue-theme` → `responsive-polish`
-→ `admin-hotel-list-responsive`
+→ `admin-hotel-list-responsive` → `hotel-amenities`
 
 ## Simplifications and next steps
 

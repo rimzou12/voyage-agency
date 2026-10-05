@@ -175,6 +175,24 @@ h1 {
       color: var(--mat-sys-on-surface-variant);
       font-size: 0.9rem;
     }
+
+    .amenity-tags {
+      list-style: none;
+      margin: 0.75rem 0 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+
+      li {
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--mat-sys-tertiary) 14%, var(--glass-surface));
+        border: 1px solid color-mix(in srgb, var(--mat-sys-tertiary) 30%, var(--glass-border));
+        font-size: 0.8rem;
+        color: var(--mat-sys-on-surface);
+      }
+    }
   }
 
 }

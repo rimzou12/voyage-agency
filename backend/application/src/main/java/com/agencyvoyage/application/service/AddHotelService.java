@@ -23,7 +23,12 @@ public final class AddHotelService implements AddHotelUseCase {
         }
 
         Hotel hotel = new Hotel(
-                HotelId.newId(), command.tripId(), command.name(), command.description(), command.photoUrls());
+                HotelId.newId(),
+                command.tripId(),
+                command.name(),
+                command.description(),
+                command.photoUrls(),
+                command.amenities());
         hotelRepository.save(hotel);
         return hotel;
     }

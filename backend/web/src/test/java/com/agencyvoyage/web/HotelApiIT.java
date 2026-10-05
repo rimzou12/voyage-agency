@@ -32,12 +32,15 @@ class HotelApiIT extends AbstractApiIT {
         HotelResponse created = rest.exchange(
                         baseUrl() + "/api/trips/" + trip.id() + "/hotels",
                         HttpMethod.POST,
-                        authed(adminToken, "{\"name\":\"Ubud Retreat\",\"description\":\"Jungle views\",\"photoUrls\":[\"https://x/a.jpg\"]}"),
+                        authed(
+                                adminToken,
+                                "{\"name\":\"Ubud Retreat\",\"description\":\"Jungle views\",\"photoUrls\":[\"https://x/a.jpg\"],\"amenities\":[\"Restaurant\",\"Pool\"]}"),
                         HotelResponse.class)
                 .getBody();
 
         assertThat(created.name()).isEqualTo("Ubud Retreat");
         assertThat(created.photoUrls()).containsExactly("https://x/a.jpg");
+        assertThat(created.amenities()).containsExactly("Restaurant", "Pool");
 
         HotelResponse[] hotels =
                 rest.getForObject(baseUrl() + "/api/trips/" + trip.id() + "/hotels", HotelResponse[].class);

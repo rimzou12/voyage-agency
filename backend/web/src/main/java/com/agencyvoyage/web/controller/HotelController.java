@@ -49,7 +49,12 @@ public class HotelController {
     public ResponseEntity<HotelResponse> addHotel(
             @PathVariable String tripId, @RequestBody AddHotelRequest request, @AuthenticationPrincipal User currentUser) {
         Hotel hotel = addHotelUseCase.addHotel(new AddHotelCommand(
-                TripId.of(tripId), request.name(), request.description(), request.photoUrls(), currentUser));
+                TripId.of(tripId),
+                request.name(),
+                request.description(),
+                request.photoUrls(),
+                request.amenities(),
+                currentUser));
         return ResponseEntity.status(HttpStatus.CREATED).body(HotelResponse.from(hotel));
     }
 
@@ -67,7 +72,12 @@ public class HotelController {
             @RequestBody AddHotelRequest request,
             @AuthenticationPrincipal User currentUser) {
         Hotel hotel = updateHotelUseCase.updateHotel(new UpdateHotelCommand(
-                HotelId.of(hotelId), request.name(), request.description(), request.photoUrls(), currentUser));
+                HotelId.of(hotelId),
+                request.name(),
+                request.description(),
+                request.photoUrls(),
+                request.amenities(),
+                currentUser));
         return HotelResponse.from(hotel);
     }
 

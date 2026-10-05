@@ -43,9 +43,10 @@ interface HotelFormState {
   name: string;
   description: string;
   photoUrls: string;
+  amenities: string;
 }
 
-const BLANK_HOTEL_FORM: HotelFormState = { name: '', description: '', photoUrls: '' };
+const BLANK_HOTEL_FORM: HotelFormState = { name: '', description: '', photoUrls: '', amenities: '' };
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -246,6 +247,7 @@ export class AdminDashboard implements OnInit {
       name: hotel.name,
       description: hotel.description,
       photoUrls: hotel.photoUrls.join('\n'),
+      amenities: hotel.amenities.join('\n'),
     });
     this.hotelFormError.set(null);
   }
@@ -265,13 +267,24 @@ export class AdminDashboard implements OnInit {
       .split(/\r?\n/)
       .map((url) => url.trim())
       .filter((url) => url.length > 0);
+    const amenities = form.amenities
+      .split(/\r?\n/)
+      .map((amenity) => amenity.trim())
+      .filter((amenity) => amenity.length > 0);
 
     this.savingHotel.set(true);
     this.hotelFormError.set(null);
     const editingId = this.editingHotelId();
     const request = editingId
-      ? this.hotelService.updateHotel(tripId, editingId, form.name.trim(), form.description.trim(), photoUrls)
-      : this.hotelService.addHotel(tripId, form.name.trim(), form.description.trim(), photoUrls);
+      ? this.hotelService.updateHotel(
+          tripId,
+          editingId,
+          form.name.trim(),
+          form.description.trim(),
+          photoUrls,
+          amenities,
+        )
+      : this.hotelService.addHotel(tripId, form.name.trim(), form.description.trim(), photoUrls, amenities);
     request.subscribe({
       next: () => {
         this.savingHotel.set(false);

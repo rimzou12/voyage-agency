@@ -89,6 +89,7 @@ export interface Hotel {
   name: string;
   description: string;
   photoUrls: string[];
+  amenities: string[];
 }
 
 export interface ContactMessage {

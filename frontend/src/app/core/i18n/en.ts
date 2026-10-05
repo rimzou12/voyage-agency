@@ -104,6 +104,7 @@ export const en: Record<string, string> = {
   'admin.hotelName': 'Name',
   'admin.hotelDescription': 'Description',
   'admin.photoUrls': 'Photo URLs (one per line)',
+  'admin.amenities': 'Amenities (one per line, e.g. "Restaurant", "Pool")',
   'admin.addHotelSubmit': 'Add hotel',
   'admin.saveHotelError': 'Could not save this hotel.',
   'admin.deleteHotelConfirm': 'Delete "{{name}}"? This cannot be undone.',
