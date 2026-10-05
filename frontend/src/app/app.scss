@@ -4,6 +4,8 @@
   z-index: 10;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
   gap: 1rem;
   padding: 0 1.5rem;
   background: var(--glass-surface) !important;
@@ -12,12 +14,27 @@
   border-bottom: 1px solid var(--glass-border);
   color: var(--mat-sys-on-surface) !important;
 
+  // Material's single-row toolbar pins a fixed height (64px, 56px below
+  // 600px) that clips anything past one line - overridden so the nav can
+  // grow to a second row instead of cutting off content once it no longer
+  // fits a single line (long translated strings, a long display name, or
+  // just a narrow phone with the admin's full account menu showing).
+  @media (max-width: 760px) {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0.6rem 1rem;
+  }
+
   .brand {
     font-family: 'Sora', sans-serif;
     font-weight: 800;
     font-size: 1.2rem;
     text-decoration: none;
     letter-spacing: -0.01em;
+
+    @media (max-width: 480px) {
+      font-size: 1.05rem;
+    }
   }
 
   .spacer {
@@ -58,8 +75,13 @@
   .account {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
     font-size: 0.9rem;
+
+    @media (max-width: 480px) {
+      gap: 0.6rem;
+    }
 
     a:not(.register) {
       color: var(--mat-sys-on-surface-variant);
@@ -71,8 +93,15 @@
       }
     }
 
+    // The greeting is purely decorative (the nav link / logout button
+    // already convey "you're logged in") - the first thing to drop once
+    // space is tight, rather than letting it force a wrap on its own.
     .hello {
       color: var(--mat-sys-on-surface-variant);
+
+      @media (max-width: 480px) {
+        display: none;
+      }
     }
 
     button mat-icon {

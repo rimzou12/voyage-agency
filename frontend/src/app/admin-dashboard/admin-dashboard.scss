@@ -23,6 +23,10 @@
   );
   border: 1px solid var(--glass-border);
   box-shadow: 0 15px 35px -18px rgba(10, 35, 65, 0.18);
+
+  @media (max-width: 560px) {
+    padding: 1.5rem;
+  }
 }
 
 .hero-icon {
@@ -100,6 +104,17 @@ h1 {
 
     .span-2 {
       grid-column: span 2;
+    }
+
+    // Two fixed columns leave each field only ~130px on a narrow phone -
+    // too cramped to type or read a number/date in. Below 560px every
+    // field (including .span-2 ones) takes the full row instead.
+    @media (max-width: 560px) {
+      grid-template-columns: 1fr;
+
+      .span-2 {
+        grid-column: span 1;
+      }
     }
   }
 

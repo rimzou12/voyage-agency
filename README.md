@@ -131,6 +131,14 @@ supply the look:
   pair up at half width, instead of a uniform card grid - breaks visual monotony
   without hardcoding which trips get the "featured" treatment, so it scales to any
   list length. Collapses to a single column below 720px.
+- Responsive down to a 375px phone throughout: the header's `mat-toolbar` wraps onto
+  a second row instead of clipping once its content no longer fits one line (its
+  fixed Material height is overridden to `auto` below 760px for this), with the
+  purely-decorative "Hi, {name}" greeting hidden first since it's the least essential
+  piece; the admin dashboard's add/edit-trip form drops from two fixed columns to one
+  below 560px (two columns left each field only ~130px - too cramped to use); and the
+  floating chat widget's panel width is clamped with `min(320px, 100%)` plus
+  side-anchored positioning below 420px so it can never overflow a narrow viewport.
 
 ### Language switching (English / French)
 
@@ -316,7 +324,7 @@ into by this work - branches are merged in by hand, in order:
 → `chat-widget-show-customer-name` → `hero-plane-background` → `i18n-en-fr`
 → `admin-dashboard-i18n-and-polish` → `i18n-trip-and-booking-detail`
 → `cinematic-editorial-homepage` → `fancy-hero-search-bar` → `custom-search-pill`
-→ `admin-dashboard-spacing-polish` → `summer-blue-theme`
+→ `admin-dashboard-spacing-polish` → `summer-blue-theme` → `responsive-polish`
 
 ## Simplifications and next steps
 
