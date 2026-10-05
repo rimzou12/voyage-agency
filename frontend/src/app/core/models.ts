@@ -92,6 +92,16 @@ export interface Hotel {
   amenities: string[];
 }
 
+export interface HotelReview {
+  id: string;
+  hotelId: string;
+  authorId: string;
+  authorName: string;
+  rating: number;
+  comment: string | null;
+  reviewedAt: string;
+}
+
 export interface ContactMessage {
   id: string;
   conversationUserId: string;

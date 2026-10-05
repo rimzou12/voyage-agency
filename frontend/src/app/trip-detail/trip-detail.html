@@ -67,6 +67,120 @@
                   }
                 </ul>
               }
+
+              <div class="review-summary">
+                @if (averageRating(hotel.id); as avg) {
+                  <span class="stars" [attr.aria-label]="avg + ' / 5'">
+                    @for (star of stars; track star) {
+                      <mat-icon>{{ star <= avg ? 'star' : star - 0.5 <= avg ? 'star_half' : 'star_border' }}</mat-icon>
+                    }
+                  </span>
+                  <span class="average">{{ avg }}</span>
+                  <span class="count">
+                    ({{
+                      reviewsFor(hotel.id).length === 1
+                        ? i18n.t('tripDetail.reviewCountSingular', { count: reviewsFor(hotel.id).length })
+                        : i18n.t('tripDetail.reviewCountPlural', { count: reviewsFor(hotel.id).length })
+                    }})
+                  </span>
+                } @else {
+                  <span class="count">{{ i18n.t('tripDetail.noReviews') }}</span>
+                }
+              </div>
+
+              @if (reviewsFor(hotel.id).length > 0) {
+                <ul class="review-list">
+                  @for (review of reviewsFor(hotel.id); track review.id) {
+                    <li>
+                      <div class="review-head">
+                        <span class="stars small">
+                          @for (star of stars; track star) {
+                            <mat-icon>{{ star <= review.rating ? 'star' : 'star_border' }}</mat-icon>
+                          }
+                        </span>
+                        <strong>{{ review.authorName }}</strong>
+                        @if (review.authorId === auth.currentUser()?.id) {
+                          <span class="you">{{ i18n.t('tripDetail.you') }}</span>
+                        }
+                        <span class="when">{{ review.reviewedAt | date: 'mediumDate' }}</span>
+                      </div>
+                      @if (review.comment) {
+                        <p class="comment">{{ review.comment }}</p>
+                      }
+                      @if (canDeleteReview(review)) {
+                        <button
+                          mat-button
+                          type="button"
+                          class="delete-review"
+                          [disabled]="deletingReviewId() === review.id"
+                          (click)="deleteReview(hotel.id, review)"
+                        >
+                          {{
+                            deletingReviewId() === review.id
+                              ? i18n.t('tripDetail.deletingReview')
+                              : i18n.t('tripDetail.deleteReview')
+                          }}
+                        </button>
+                      }
+                    </li>
+                  }
+                </ul>
+              }
+
+              @if (auth.isLoggedIn()) {
+                @if (reviewingHotelId() === hotel.id) {
+                  <form class="review-form" (submit)="$event.preventDefault(); submitReview(hotel.id)">
+                    <span class="rating-label">{{ i18n.t('tripDetail.yourRating') }}</span>
+                    <span class="star-picker">
+                      @for (star of stars; track star) {
+                        <button
+                          type="button"
+                          [class.filled]="star <= reviewForm().rating"
+                          [attr.aria-label]="star + ' / 5'"
+                          (click)="setRating(star)"
+                        >
+                          <mat-icon>{{ star <= reviewForm().rating ? 'star' : 'star_border' }}</mat-icon>
+                        </button>
+                      }
+                    </span>
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ i18n.t('tripDetail.commentLabel') }}</mat-label>
+                      <textarea
+                        matInput
+                        rows="2"
+                        [ngModel]="reviewForm().comment"
+                        name="reviewComment"
+                        (ngModelChange)="reviewForm.set({ ...reviewForm(), comment: $event })"
+                      ></textarea>
+                    </mat-form-field>
+                    <div class="actions">
+                      <button mat-flat-button type="submit" [disabled]="savingReview()">
+                        {{
+                          savingReview()
+                            ? i18n.t('tripDetail.savingReview')
+                            : myReview(hotel.id)
+                              ? i18n.t('tripDetail.updateReview')
+                              : i18n.t('tripDetail.submitReview')
+                        }}
+                      </button>
+                      <button mat-stroked-button type="button" [disabled]="savingReview()" (click)="cancelReview()">
+                        {{ i18n.t('tripDetail.cancelReview') }}
+                      </button>
+                    </div>
+                    @if (reviewError()) {
+                      <p class="error">{{ reviewError() }}</p>
+                    }
+                  </form>
+                } @else {
+                  <button mat-button type="button" class="write-review" (click)="startReview(hotel.id)">
+                    {{ myReview(hotel.id) ? i18n.t('tripDetail.editReview') : i18n.t('tripDetail.writeReview') }}
+                  </button>
+                }
+              } @else {
+                <a class="write-review" [routerLink]="['/login']" [queryParams]="{ redirectTo: '/trips/' + t.id }">
+                  {{ i18n.t('tripDetail.loginToReview') }}
+                </a>
+              }
             </li>
           }
         </ul>

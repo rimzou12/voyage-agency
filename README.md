@@ -202,6 +202,14 @@ Reframing the kata's original group-purchase stories for trips:
   first and can't be undone; deleting a trip doesn't touch any group bookings already
   made for it (no foreign-key link from booking to trip - see Simplifications).
   Logging in as an admin goes straight to the dashboard instead of the trip list.
+- Any logged-in user can rate and review a hotel (1-5 stars, plus an optional text
+  comment) on the trip-detail page, at most once per hotel - a repeat submission edits
+  their existing review instead of creating a second one (enforced by a `(hotel_id,
+  author_user_id)` unique constraint, not just an application-layer check). The
+  author can edit or delete their own review; an admin can delete anyone's. Each
+  hotel shows its average rating and review count as a star row, with every
+  individual review (author, stars, date, comment) listed underneath - this is where
+  "the client can see the hotel's score" before picking where to stay.
 - The trip catalog can be searched by name/description and filtered to trips running on
   a chosen date (i.e. that date falls within the trip's departure-return window); both
   filters combine and update the list live as you type or pick a date.
@@ -259,6 +267,10 @@ The frontend's API base URL is hardcoded to `http://localhost:8080` in
 | POST   | `/api/trips/{tripId}/hotels`              | admin only | Add a hotel to a trip's catalog (`{name, description, photoUrls, amenities}`) - `403` for a non-admin |
 | PUT    | `/api/trips/{tripId}/hotels/{hotelId}`    | admin only | Edit a hotel (same body as `POST`) - `403` for a non-admin, `404` if unknown |
 | DELETE | `/api/trips/{tripId}/hotels/{hotelId}`    | admin only | Remove a hotel from a trip's catalog - `403` for a non-admin, `404` if unknown |
+| POST   | `/api/hotels/{hotelId}/reviews`           | required | Rate and review a hotel (`{rating, comment}`) - `409` if the caller already reviewed this hotel |
+| GET    | `/api/hotels/{hotelId}/reviews`           | -    | List a hotel's reviews, newest first |
+| PUT    | `/api/hotels/{hotelId}/reviews/{reviewId}` | required | Edit your own review (same body as `POST`) - `403` if not the author, `404` if unknown |
+| DELETE | `/api/hotels/{hotelId}/reviews/{reviewId}` | required | Delete a review - the author or an admin only, `403` otherwise, `404` if unknown |
 
 Authenticated requests send `Authorization: Bearer <token>`, a JWT (HS256) returned by
 register/login. Its secret and expiration are configured via
@@ -332,7 +344,7 @@ into by this work - branches are merged in by hand, in order:
 → `admin-dashboard-i18n-and-polish` → `i18n-trip-and-booking-detail`
 → `cinematic-editorial-homepage` → `fancy-hero-search-bar` → `custom-search-pill`
 → `admin-dashboard-spacing-polish` → `summer-blue-theme` → `responsive-polish`
-→ `admin-hotel-list-responsive` → `hotel-amenities`
+→ `admin-hotel-list-responsive` → `hotel-amenities` → `hotel-reviews`
 
 ## Simplifications and next steps
 
@@ -373,6 +385,12 @@ Documented deliberately, not accidentally missed:
   itself. Adding a new frontend string to the dictionary is
   mechanical (add keys to both `core/i18n/en.ts` and `core/i18n/fr.ts`, call
   `i18n.t('key')` in the template) - just not done everywhere yet.
+- **Hotel reviews aren't restricted to verified stays.** Any logged-in user can rate
+  and review any hotel, with no check that they actually traveled with a confirmed
+  group booking for that trip - a deliberate scope choice (Airbnb/Booking.com-style
+  "verified stay only" reviews would need a new check against the traveler's booking
+  history) rather than an oversight. The one-review-per-hotel rule is still fully
+  enforced (a DB unique constraint, not just a UI nicety).
 - **The audit trail has no replay/backfill path.** It's built purely from events
   consumed going forward; if `audit_event` were ever dropped or a booking existed
   before this feature shipped, its earlier history is gone rather than reconstructible

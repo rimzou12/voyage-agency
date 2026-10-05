@@ -193,6 +193,142 @@ h1 {
         color: var(--mat-sys-on-surface);
       }
     }
+
+    // Star rating display, shared sizing for both the hotel's average (in
+    // .review-summary) and each individual review's rating (in .review-list).
+    .stars {
+      display: inline-flex;
+      align-items: center;
+      color: var(--mat-sys-tertiary);
+
+      mat-icon {
+        font-size: 1.1rem;
+        height: 1.1rem;
+        width: 1.1rem;
+      }
+
+      &.small mat-icon {
+        font-size: 0.95rem;
+        height: 0.95rem;
+        width: 0.95rem;
+      }
+    }
+
+    .review-summary {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+
+      .average {
+        font-weight: 700;
+      }
+
+      .count {
+        color: var(--mat-sys-on-surface-variant);
+      }
+    }
+
+    .review-list {
+      list-style: none;
+      margin: 0.75rem 0 0;
+      padding: 0.75rem 0 0;
+      border-top: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .review-head {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        font-size: 0.85rem;
+      }
+
+      .you {
+        padding: 0.05rem 0.4rem;
+        border-radius: 999px;
+        background: var(--gradient-aurora);
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .when {
+        margin-left: auto;
+        color: var(--mat-sys-on-surface-variant);
+        font-size: 0.78rem;
+      }
+
+      .comment {
+        margin: 0.3rem 0 0;
+        font-size: 0.88rem;
+        color: var(--mat-sys-on-surface);
+      }
+
+      .delete-review {
+        margin-top: 0.1rem;
+        color: var(--mat-sys-error) !important;
+        font-size: 0.78rem;
+      }
+    }
+
+    .write-review {
+      margin-top: 0.75rem;
+      display: inline-block;
+      font-size: 0.85rem;
+    }
+
+    .review-form {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+
+      .rating-label {
+        font-size: 0.82rem;
+        color: var(--mat-sys-on-surface-variant);
+      }
+
+      .star-picker {
+        display: flex;
+        gap: 0.15rem;
+        margin-bottom: 0.3rem;
+
+        button {
+          border: none;
+          background: transparent;
+          padding: 0.15rem;
+          cursor: pointer;
+          color: var(--mat-sys-on-surface-variant);
+
+          &.filled {
+            color: var(--mat-sys-tertiary);
+          }
+
+          mat-icon {
+            font-size: 1.4rem;
+            height: 1.4rem;
+            width: 1.4rem;
+          }
+        }
+      }
+
+      mat-form-field {
+        width: 100%;
+      }
+
+      .actions {
+        display: flex;
+        gap: 0.6rem;
+        margin-top: 0.3rem;
+      }
+    }
   }
 
 }
