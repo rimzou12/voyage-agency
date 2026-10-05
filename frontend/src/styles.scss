@@ -6,15 +6,15 @@
 
 html {
   height: 100%;
-  // Light "sunrise over the ocean" theme: a warm coral/sunset orange primary
-  // (energy, happiness) paired with a fresh turquoise-cyan tertiary (sky,
-  // sea, travel) - a classic warm/cool travel-brand pairing, and light so
-  // the whole page reads bright and welcoming rather than moody.
+  // Light "summer at the coast" theme: a vivid ocean/sky azure primary (sea,
+  // sky, travel) paired with a warm sunset-orange tertiary (sun, energy) -
+  // the classic beach-holiday blue/orange pairing, and light so the whole
+  // page reads bright and sunny rather than moody.
   @include mat.theme(
     (
       color: (
-        primary: mat.$orange-palette,
-        tertiary: mat.$cyan-palette,
+        primary: mat.$azure-palette,
+        tertiary: mat.$orange-palette,
         theme-type: light,
       ),
       typography: (
@@ -31,10 +31,10 @@ html {
   // variables above, for the parts of the "aurora" look Material doesn't
   // have an opinion on: glow, glass surfaces and the signature gradient.
   //
-  // --page-base is deliberately its own warm ivory, not var(--mat-sys-surface)
-  // (a flatter, slightly cooler white) - gives the page a sunny warmth even
-  // where no color bloom reaches.
-  --page-base: #fffaf2;
+  // --page-base is deliberately its own crisp sky-blue white, not
+  // var(--mat-sys-surface) (a flatter, more neutral white) - gives the page
+  // a fresh summer-sky coolness even where no color bloom reaches.
+  --page-base: #f3f9ff;
   --glow-primary: color-mix(in srgb, var(--mat-sys-primary) 45%, transparent);
   --glow-tertiary: color-mix(in srgb, var(--mat-sys-tertiary) 45%, transparent);
   --glass-surface: color-mix(in srgb, #ffffff 72%, transparent);
@@ -77,8 +77,8 @@ body {
   // A slow-drifting aurora mesh behind every page - fixed so it never
   // scrolls with the content, layered from the theme's own generated
   // colors so it always stays in harmony with whatever palette is active.
-  // Kept small and low-opacity so each bloom reads as a soft, sunny wash
-  // against --page-base's warm ivory rather than muddying it or hurting
+  // Kept small and low-opacity so each bloom reads as a soft, breezy wash
+  // against --page-base's sky-blue white rather than muddying it or hurting
   // text contrast.
   background-image:
     radial-gradient(circle at 12% 15%, color-mix(in srgb, var(--mat-sys-primary) 16%, transparent), transparent 38%),
@@ -138,16 +138,16 @@ a {
 
 // Shared "glass panel" look used by cards/sections across every page. The
 // shadow is baseline (not just on :hover) so panels read as elevated cards
-// against --page-base's warm ivory even before any interaction - kept soft
-// and low-opacity, since the stark dark-theme shadow read as a harsh black
-// smudge once the page itself turned light.
+// against --page-base's sky-blue white even before any interaction - kept
+// soft and low-opacity, since the stark dark-theme shadow read as a harsh
+// black smudge once the page itself turned light.
 .glass-panel {
   background: var(--glass-surface);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 15px 35px -18px rgba(60, 40, 20, 0.18);
+  box-shadow: 0 15px 35px -18px rgba(10, 35, 65, 0.18);
 }
 
 @keyframes fade-in-up {

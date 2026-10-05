@@ -22,7 +22,7 @@
     color-mix(in srgb, var(--mat-sys-tertiary) 10%, var(--glass-surface))
   );
   border: 1px solid var(--glass-border);
-  box-shadow: 0 15px 35px -18px rgba(60, 40, 20, 0.18);
+  box-shadow: 0 15px 35px -18px rgba(10, 35, 65, 0.18);
 }
 
 .hero-icon {
@@ -125,7 +125,7 @@ h1 {
 
   &:hover {
     border-color: color-mix(in srgb, var(--mat-sys-primary) 30%, var(--glass-border));
-    box-shadow: 0 18px 38px -20px rgba(60, 40, 20, 0.25);
+    box-shadow: 0 18px 38px -20px rgba(10, 35, 65, 0.25);
   }
 }
 

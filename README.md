@@ -72,26 +72,29 @@ trail, and the live SSE update all pick it up for free.
 
 The frontend is built on **Angular Material** (`@angular/material`, Material 3 /
 `mat.theme()`) rather than hand-rolled components, but skinned with a custom light
-"sunrise over the ocean" palette (`primary: $orange-palette`, `tertiary: $cyan-palette`,
+"summer at the coast" palette (`primary: $azure-palette`, `tertiary: $orange-palette`,
 `theme-type: light` in `src/styles.scss`) and type pairing (Sora for headings, Inter for
-body) instead of stock Material blue/Roboto - a warm coral/sunset orange paired with a
-fresh turquoise-cyan, picked for a bright, welcoming "travel and happiness" feel (an
-earlier dark "aurora" look, cycled through a couple of color pairings, was dropped for
-reading moody rather than inviting). Material supplies the system (ripple, elevation,
-motion, the M3 color/typography token system via `--mat-sys-*` CSS variables), the
-custom theme and a handful of shared primitives supply the look:
+body) instead of stock Material blue/Roboto - a vivid ocean/sky azure paired with a
+warm sunset-orange accent, the classic beach-holiday blue/orange pairing, picked for a
+bright, sunny "summer travel" feel (an earlier dark "aurora" look, cycled through a
+couple of color pairings including this same blue/orange split before, was dropped for
+reading moody rather than inviting - and the warm-orange-primary variant that followed
+it has now swapped back to blue-primary per direct design feedback). Material supplies
+the system (ripple, elevation, motion, the M3 color/typography token system via
+`--mat-sys-*` CSS variables), the custom theme and a handful of shared primitives
+supply the look:
 
 - A slow-drifting animated gradient mesh behind every page (`body`'s
   `aurora-drift` keyframe), built from the theme's own generated colors via
   `color-mix()` so it stays in harmony with whatever palette is active. It sits on its
-  own warm ivory base (`--page-base`, not the flatter `--mat-sys-surface`) with each
-  color bloom kept small and low-opacity so they read as a soft sunny wash rather than
-  hurting text contrast.
+  own crisp sky-blue-white base (`--page-base`, not the flatter `--mat-sys-surface`)
+  with each color bloom kept small and low-opacity so they read as a soft breezy wash
+  rather than hurting text contrast.
 - A `.glass-panel`/`glass-panel` Sass mixin (`src/styles/_mixins.scss`, `@use`d via
   `stylePreprocessorOptions.includePaths` in `angular.json`) for the frosted,
-  backdrop-blurred cards used across every page, with a soft warm-toned baseline drop
-  shadow so they read as elevated against `--page-base` even before any hover/focus
-  state.
+  backdrop-blurred cards used across every page, with a soft cool-toned (navy-blue)
+  baseline drop shadow so they read as elevated against `--page-base` even before any
+  hover/focus state.
 - A `.gradient-text` mixin/utility for small-to-medium gradient-clipped text (price
   figures, the nav brand, filled buttons) - deliberately **not** used for large bold
   headings, where `background-clip: text` rendered a visible double-stroke artifact in
@@ -313,7 +316,7 @@ into by this work - branches are merged in by hand, in order:
 → `chat-widget-show-customer-name` → `hero-plane-background` → `i18n-en-fr`
 → `admin-dashboard-i18n-and-polish` → `i18n-trip-and-booking-detail`
 → `cinematic-editorial-homepage` → `fancy-hero-search-bar` → `custom-search-pill`
-→ `admin-dashboard-spacing-polish`
+→ `admin-dashboard-spacing-polish` → `summer-blue-theme`
 
 ## Simplifications and next steps
 
