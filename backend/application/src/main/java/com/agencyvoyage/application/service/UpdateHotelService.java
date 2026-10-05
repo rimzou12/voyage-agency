@@ -26,7 +26,12 @@ public final class UpdateHotelService implements UpdateHotelUseCase {
                 .orElseThrow(() -> new HotelNotFoundException(command.hotelId()));
 
         Hotel updated = new Hotel(
-                existing.id(), existing.tripId(), command.name(), command.description(), command.photoUrls());
+                existing.id(),
+                existing.tripId(),
+                command.name(),
+                command.description(),
+                command.photoUrls(),
+                command.amenities());
         hotelRepository.save(updated);
         return updated;
     }

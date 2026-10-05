@@ -47,13 +47,19 @@ class UpdateHotelServiceTest {
         when(hotelRepository.findById(existing.id())).thenReturn(Optional.of(existing));
 
         Hotel result = service.updateHotel(new UpdateHotelCommand(
-                existing.id(), "Renamed Retreat", "Updated views", List.of("https://x/new.jpg"), ADMIN));
+                existing.id(),
+                "Renamed Retreat",
+                "Updated views",
+                List.of("https://x/new.jpg"),
+                List.of("Spa"),
+                ADMIN));
 
         assertThat(result.id()).isEqualTo(existing.id());
         assertThat(result.tripId()).isEqualTo(existing.tripId());
         assertThat(result.name()).isEqualTo("Renamed Retreat");
         assertThat(result.description()).isEqualTo("Updated views");
         assertThat(result.photoUrls()).containsExactly("https://x/new.jpg");
+        assertThat(result.amenities()).containsExactly("Spa");
         ArgumentCaptor<Hotel> captor = ArgumentCaptor.forClass(Hotel.class);
         verify(hotelRepository).save(captor.capture());
         assertThat(captor.getValue()).isEqualTo(result);
@@ -63,8 +69,8 @@ class UpdateHotelServiceTest {
     void rejectsANonAdminCaller() {
         Hotel existing = existingHotel();
 
-        assertThatThrownBy(() -> service.updateHotel(
-                        new UpdateHotelCommand(existing.id(), "Renamed", "Updated", List.of(), REGULAR_USER)))
+        assertThatThrownBy(() -> service.updateHotel(new UpdateHotelCommand(
+                        existing.id(), "Renamed", "Updated", List.of(), List.of(), REGULAR_USER)))
                 .isInstanceOf(NotAnAdminException.class);
         verify(hotelRepository, never()).save(any());
     }
@@ -75,11 +81,11 @@ class UpdateHotelServiceTest {
         when(hotelRepository.findById(unknownId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.updateHotel(
-                        new UpdateHotelCommand(unknownId, "Renamed", "Updated", List.of(), ADMIN)))
+                        new UpdateHotelCommand(unknownId, "Renamed", "Updated", List.of(), List.of(), ADMIN)))
                 .isInstanceOf(HotelNotFoundException.class);
     }
 
     private static Hotel existingHotel() {
-        return new Hotel(HotelId.newId(), TripId.newId(), "Ubud Retreat", "Jungle views", List.of());
+        return new Hotel(HotelId.newId(), TripId.newId(), "Ubud Retreat", "Jungle views", List.of(), List.of());
     }
 }

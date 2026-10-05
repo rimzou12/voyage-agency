@@ -30,7 +30,7 @@ class ListHotelsForTripServiceTest {
     @Test
     void returnsWhateverTheRepositoryHasForThatTrip() {
         TripId tripId = TripId.newId();
-        Hotel hotel = new Hotel(HotelId.newId(), tripId, "Ubud Retreat", "Jungle views", List.of());
+        Hotel hotel = new Hotel(HotelId.newId(), tripId, "Ubud Retreat", "Jungle views", List.of(), List.of());
         when(hotelRepository.findByTripId(tripId)).thenReturn(List.of(hotel));
 
         List<Hotel> result = service.listHotels(tripId);

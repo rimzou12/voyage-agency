@@ -28,7 +28,8 @@ public class HotelRepositoryAdapter implements HotelRepository {
                 hotel.tripId().value(),
                 hotel.name(),
                 hotel.description(),
-                hotel.photoUrls()));
+                hotel.photoUrls(),
+                hotel.amenities()));
     }
 
     @Override
@@ -54,6 +55,7 @@ public class HotelRepositoryAdapter implements HotelRepository {
                 new TripId(entity.getTripId()),
                 entity.getName(),
                 entity.getDescription(),
-                entity.getPhotoUrls());
+                entity.getPhotoUrls(),
+                entity.getAmenities());
     }
 }

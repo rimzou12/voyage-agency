@@ -39,12 +39,18 @@ class AddHotelServiceTest {
         TripId tripId = TripId.newId();
 
         Hotel result = service.addHotel(new AddHotelCommand(
-                tripId, "Ubud Retreat", "Jungle views", List.of("https://example.com/photo.jpg"), admin));
+                tripId,
+                "Ubud Retreat",
+                "Jungle views",
+                List.of("https://example.com/photo.jpg"),
+                List.of("Restaurant", "Pool"),
+                admin));
 
         assertThat(result.tripId()).isEqualTo(tripId);
         assertThat(result.name()).isEqualTo("Ubud Retreat");
         assertThat(result.description()).isEqualTo("Jungle views");
         assertThat(result.photoUrls()).containsExactly("https://example.com/photo.jpg");
+        assertThat(result.amenities()).containsExactly("Restaurant", "Pool");
         ArgumentCaptor<Hotel> captor = ArgumentCaptor.forClass(Hotel.class);
         verify(hotelRepository).save(captor.capture());
         assertThat(captor.getValue()).isEqualTo(result);
@@ -56,7 +62,7 @@ class AddHotelServiceTest {
         TripId tripId = TripId.newId();
 
         assertThatThrownBy(() -> service.addHotel(
-                        new AddHotelCommand(tripId, "Ubud Retreat", "Jungle views", List.of(), regularUser)))
+                        new AddHotelCommand(tripId, "Ubud Retreat", "Jungle views", List.of(), List.of(), regularUser)))
                 .isInstanceOf(NotAnAdminException.class);
         verify(hotelRepository, never()).save(org.mockito.ArgumentMatchers.any());
     }

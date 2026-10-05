@@ -68,6 +68,6 @@ class DeleteHotelServiceTest {
     }
 
     private static Hotel existingHotel() {
-        return new Hotel(HotelId.newId(), TripId.newId(), "Ubud Retreat", "Jungle views", List.of());
+        return new Hotel(HotelId.newId(), TripId.newId(), "Ubud Retreat", "Jungle views", List.of(), List.of());
     }
 }

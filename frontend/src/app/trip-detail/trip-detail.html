@@ -60,6 +60,13 @@
               }
               <h3>{{ hotel.name }}</h3>
               <p>{{ hotel.description }}</p>
+              @if (hotel.amenities.length > 0) {
+                <ul class="amenity-tags">
+                  @for (amenity of hotel.amenities; track amenity) {
+                    <li>{{ amenity }}</li>
+                  }
+                </ul>
+              }
             </li>
           }
         </ul>

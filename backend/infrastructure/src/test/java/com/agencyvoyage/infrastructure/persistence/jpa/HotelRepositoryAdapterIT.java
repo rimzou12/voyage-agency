@@ -18,14 +18,15 @@ class HotelRepositoryAdapterIT extends AbstractPostgresIT {
     private HotelRepositoryAdapter adapter;
 
     @Test
-    void savesAndReloadsAHotelWithItsPhotos() {
+    void savesAndReloadsAHotelWithItsPhotosAndAmenities() {
         TripId tripId = TripId.newId();
         Hotel hotel = new Hotel(
                 HotelId.newId(),
                 tripId,
                 "Ubud Retreat",
                 "Jungle views",
-                List.of("https://example.com/a.jpg", "https://example.com/b.jpg"));
+                List.of("https://example.com/a.jpg", "https://example.com/b.jpg"),
+                List.of("Restaurant", "Pool", "Free Wi-Fi"));
 
         adapter.save(hotel);
 
@@ -36,9 +37,10 @@ class HotelRepositoryAdapterIT extends AbstractPostgresIT {
     @Test
     void findsOnlyHotelsForTheGivenTrip() {
         TripId tripId = TripId.newId();
-        Hotel hotel = new Hotel(HotelId.newId(), tripId, "Ubud Retreat", "Jungle views", List.of());
+        Hotel hotel = new Hotel(HotelId.newId(), tripId, "Ubud Retreat", "Jungle views", List.of(), List.of());
         adapter.save(hotel);
-        adapter.save(new Hotel(HotelId.newId(), TripId.newId(), "Other Trip Hotel", "Elsewhere", List.of()));
+        adapter.save(
+                new Hotel(HotelId.newId(), TripId.newId(), "Other Trip Hotel", "Elsewhere", List.of(), List.of()));
 
         List<Hotel> found = adapter.findByTripId(tripId);
 
@@ -46,24 +48,31 @@ class HotelRepositoryAdapterIT extends AbstractPostgresIT {
     }
 
     @Test
-    void saveUpdatesAnExistingHotelAndReplacesItsPhotos() {
+    void saveUpdatesAnExistingHotelAndReplacesItsPhotosAndAmenities() {
         TripId tripId = TripId.newId();
-        Hotel hotel = new Hotel(HotelId.newId(), tripId, "Ubud Retreat", "Jungle views", List.of("https://x/a.jpg"));
+        Hotel hotel = new Hotel(
+                HotelId.newId(), tripId, "Ubud Retreat", "Jungle views", List.of("https://x/a.jpg"), List.of("Pool"));
         adapter.save(hotel);
 
         Hotel updated = new Hotel(
-                hotel.id(), tripId, "Renamed Retreat", "Updated views", List.of("https://x/new.jpg"));
+                hotel.id(),
+                tripId,
+                "Renamed Retreat",
+                "Updated views",
+                List.of("https://x/new.jpg"),
+                List.of("Restaurant", "Spa"));
         adapter.save(updated);
 
         Hotel reloaded = adapter.findById(hotel.id()).orElseThrow();
         assertThat(reloaded.name()).isEqualTo("Renamed Retreat");
         assertThat(reloaded.description()).isEqualTo("Updated views");
         assertThat(reloaded.photoUrls()).containsExactly("https://x/new.jpg");
+        assertThat(reloaded.amenities()).containsExactly("Restaurant", "Spa");
     }
 
     @Test
     void deleteRemovesTheHotel() {
-        Hotel hotel = new Hotel(HotelId.newId(), TripId.newId(), "Ubud Retreat", "Jungle views", List.of());
+        Hotel hotel = new Hotel(HotelId.newId(), TripId.newId(), "Ubud Retreat", "Jungle views", List.of(), List.of());
         adapter.save(hotel);
 
         adapter.deleteById(hotel.id());

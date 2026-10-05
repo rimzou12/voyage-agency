@@ -193,6 +193,13 @@
                         <div>
                           <strong>{{ hotel.name }}</strong>
                           <p>{{ hotel.description }}</p>
+                          @if (hotel.amenities.length > 0) {
+                            <ul class="amenity-tags">
+                              @for (amenity of hotel.amenities; track amenity) {
+                                <li>{{ amenity }}</li>
+                              }
+                            </ul>
+                          }
                         </div>
                         <div class="hotel-actions">
                           <button mat-stroked-button type="button" (click)="startEditingHotel(hotel)">
@@ -249,6 +256,16 @@
                     [ngModel]="hotelForm().photoUrls"
                     name="hotelPhotoUrls"
                     (ngModelChange)="hotelForm.set({ ...hotelForm(), photoUrls: $event })"
+                  ></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ i18n.t('admin.amenities') }}</mat-label>
+                  <textarea
+                    matInput
+                    rows="3"
+                    [ngModel]="hotelForm().amenities"
+                    name="hotelAmenities"
+                    (ngModelChange)="hotelForm.set({ ...hotelForm(), amenities: $event })"
                   ></textarea>
                 </mat-form-field>
                 <div class="actions">

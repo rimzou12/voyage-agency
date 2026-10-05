@@ -69,18 +69,25 @@ class HotelControllerTest {
     @Test
     void anAdminCanAddAHotelReturning201() {
         TripId tripId = TripId.newId();
-        Hotel hotel = new Hotel(HotelId.newId(), tripId, "Ubud Retreat", "Jungle views", List.of("https://x/a.jpg"));
+        Hotel hotel = new Hotel(
+                HotelId.newId(),
+                tripId,
+                "Ubud Retreat",
+                "Jungle views",
+                List.of("https://x/a.jpg"),
+                List.of("Restaurant", "Pool"));
         when(addHotelUseCase.addHotel(any(AddHotelCommand.class))).thenReturn(hotel);
 
         assertThat(mvc.post()
                         .uri("/api/trips/" + tripId + "/hotels")
                         .with(asAdmin())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Ubud Retreat\",\"description\":\"Jungle views\",\"photoUrls\":[\"https://x/a.jpg\"]}"))
+                        .content(
+                                "{\"name\":\"Ubud Retreat\",\"description\":\"Jungle views\",\"photoUrls\":[\"https://x/a.jpg\"],\"amenities\":[\"Restaurant\",\"Pool\"]}"))
                 .hasStatus(201)
                 .bodyJson()
-                .extractingPath("$.name")
-                .isEqualTo("Ubud Retreat");
+                .extractingPath("$.amenities[0]")
+                .isEqualTo("Restaurant");
     }
 
     @Test
@@ -110,7 +117,7 @@ class HotelControllerTest {
     @Test
     void listHotelsReturnsThemAsJsonWithoutRequiringAuthentication() {
         TripId tripId = TripId.newId();
-        Hotel hotel = new Hotel(HotelId.newId(), tripId, "Ubud Retreat", "Jungle views", List.of());
+        Hotel hotel = new Hotel(HotelId.newId(), tripId, "Ubud Retreat", "Jungle views", List.of(), List.of());
         when(listHotelsForTripUseCase.listHotels(tripId)).thenReturn(List.of(hotel));
 
         assertThat(mvc.get().uri("/api/trips/" + tripId + "/hotels"))
@@ -124,7 +131,7 @@ class HotelControllerTest {
     void anAdminCanUpdateAHotel() {
         TripId tripId = TripId.newId();
         HotelId hotelId = HotelId.newId();
-        Hotel updated = new Hotel(hotelId, tripId, "Renamed Retreat", "Updated views", List.of());
+        Hotel updated = new Hotel(hotelId, tripId, "Renamed Retreat", "Updated views", List.of(), List.of());
         when(updateHotelUseCase.updateHotel(any(UpdateHotelCommand.class))).thenReturn(updated);
 
         assertThat(mvc.put()

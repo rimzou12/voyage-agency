@@ -105,6 +105,7 @@ export const fr: Record<string, string> = {
   'admin.hotelName': 'Nom',
   'admin.hotelDescription': 'Description',
   'admin.photoUrls': 'URLs des photos (une par ligne)',
+  'admin.amenities': 'Équipements (un par ligne, ex. « Restaurant », « Piscine »)',
   'admin.addHotelSubmit': "Ajouter l'hôtel",
   'admin.saveHotelError': 'Impossible d’enregistrer cet hôtel.',
   'admin.deleteHotelConfirm': 'Supprimer « {{name}} » ? Cette action est irréversible.',
