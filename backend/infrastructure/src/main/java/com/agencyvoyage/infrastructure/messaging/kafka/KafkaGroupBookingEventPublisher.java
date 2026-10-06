@@ -8,6 +8,7 @@ import com.agencyvoyage.infrastructure.messaging.kafka.dto.GroupBookingFinalized
 import com.agencyvoyage.infrastructure.messaging.kafka.dto.ParticipantJoinedMessage;
 import com.agencyvoyage.infrastructure.messaging.kafka.dto.ParticipantLeftMessage;
 import java.util.Objects;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +16,13 @@ import org.springframework.stereotype.Component;
  * Publishes group-booking domain events to Kafka. The booking id is used as the
  * record key so every event for one booking lands in the same partition, keeping
  * per-booking ordering (join before join, finalize after every join).
+ *
+ * <p>Only active when {@code agency-voyage.kafka.enabled} is true (the default); see
+ * {@code InProcessGroupBookingEventPublisher} for the no-Kafka alternative used in
+ * environments without a broker, such as the Render deployment.
  */
 @Component
+@ConditionalOnProperty(prefix = "agency-voyage.kafka", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class KafkaGroupBookingEventPublisher implements GroupBookingEventPublisher {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;

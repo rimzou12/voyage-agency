@@ -1,0 +1,10 @@
+# Activated via SPRING_PROFILES_ACTIVE=render on the deployed backend (see render.yaml).
+# No Kafka broker in this environment - InProcessGroupBookingEventPublisher takes over
+# for the Kafka-backed publisher/listeners (see agency-voyage.kafka.enabled below).
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+
+agency-voyage:
+  kafka:
+    enabled: false

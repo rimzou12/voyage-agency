@@ -14,6 +14,7 @@ Built with **Spring Boot 4.1 / Java 25** (hexagonal/clean architecture) on the b
 - [Design](#design)
 - [Business rules](#business-rules)
 - [Running it locally](#running-it-locally)
+- [Deployment](#deployment)
 - [API](#api)
 - [Testing](#testing)
 - [CI](#ci)
@@ -235,8 +236,40 @@ npm start
 Kafka UI is at `http://localhost:8085` if you want to watch the topics
 (`group-booking.participant-joined`, `group-booking.finalized`) fill up as you use the app.
 
-The frontend's API base URL is hardcoded to `http://localhost:8080` in
-`frontend/src/app/core/api-config.ts` - there's no build-time environment config yet.
+The frontend's API base URL comes from `frontend/src/environments/environment.ts`
+(`http://localhost:8080` for local dev); the production build swaps in
+`environment.prod.ts` instead (see [Deployment](#deployment)).
+
+## Deployment
+
+Deployed on [Render](https://render.com) via the `render.yaml` Blueprint at the repo
+root: a free Postgres database, the backend as a Docker web service, and the frontend
+as a static site. Render watches the GitHub repo directly and redeploys on every push
+to `main` - GitHub Actions' job is CI only (see [CI](#ci)), not triggering deploys.
+
+**First-time setup** (one-off, done by hand on [render.com](https://render.com)):
+
+1. Push this repo to GitHub.
+2. On Render: **New +** → **Blueprint**, point it at the repo. Render reads
+   `render.yaml` and creates all three services.
+3. Set the two secrets `render.yaml` leaves blank (`sync: false`) on the backend
+   service: `AGENCY_VOYAGE_ADMIN_EMAIL` and `AGENCY_VOYAGE_ADMIN_PASSWORD` - the admin
+   account seeded on first boot. Everything else (DB connection, JWT secret, CORS
+   origin) is wired automatically from the Blueprint.
+4. First deploy takes a few minutes (free-tier Postgres + a from-scratch Docker
+   build). After that, every push to `main` redeploys both services automatically.
+
+**No managed Kafka on Render.** The backend runs with `SPRING_PROFILES_ACTIVE=render`
+there, which disables the Kafka-backed event publisher and listeners in favor of
+`InProcessGroupBookingEventPublisher` - same audit trail, same live SSE updates, same
+notification log, just called directly instead of round-tripping through a broker (see
+`backend/web/src/main/resources/application-render.yml`). Kafka itself remains
+local-only (`docker compose up`), used by the `backend-ci.yml` integration tests and
+for local development.
+
+**Known limitation:** Render's free tier spins down a web service after 15 minutes of
+inactivity; the first request after that takes ~30-60s to wake it back up. Fine for a
+demo deployment, not for production traffic.
 
 ## API
 
@@ -345,7 +378,7 @@ into by this work - branches are merged in by hand, in order:
 → `cinematic-editorial-homepage` → `fancy-hero-search-bar` → `custom-search-pill`
 → `admin-dashboard-spacing-polish` → `summer-blue-theme` → `responsive-polish`
 → `admin-hotel-list-responsive` → `hotel-amenities` → `hotel-reviews`
-→ `admin-toasts-and-hotel-cancel`
+→ `admin-toasts-and-hotel-cancel` → `render-deploy`
 
 ## Simplifications and next steps
 
@@ -355,6 +388,12 @@ Documented deliberately, not accidentally missed:
   real system this would be its own service, consuming the same topics to actually
   notify customers. Kept in-process here to demonstrate the event flow without standing
   up a second deployable for an MVP pass.
+- **No Kafka broker at all on the deployed instance.** Render has no managed Kafka
+  offering, so the production profile (`application-render.yml`) swaps the real
+  `KafkaGroupBookingEventPublisher`/listeners for `InProcessGroupBookingEventPublisher`,
+  which does the same work (audit trail, SSE broadcast, notification log) as direct
+  method calls instead of pub/sub. Functionally equivalent for a single instance; a real
+  multi-instance deployment would need a real broker (or managed equivalent) back.
 - **Live updates hold their state in memory, in the one deployable.**
   `GroupBookingEventBroadcaster` keeps its SSE subscribers in a plain in-memory map on
   the `web` instance that received the connection. That's fine for one instance; running
@@ -366,7 +405,7 @@ Documented deliberately, not accidentally missed:
 - **Trips are seed data, not admin-managed.** `TripCatalogSeeder` inserts a handful of
   sample trips on first startup; there's no create/edit flow for the catalog itself.
 - **Auth is email/password + JWT, no refresh tokens.** `register`/`login` issue a
-  single long-lived (24h) JWT; there's no refresh flow or revocation - logging out just
+  single long-lived (2h) JWT; there's no refresh flow or revocation - logging out just
   drops the token client-side. `User` stays a pure identity in `domain` (id, email,
   display name); the password hash lives only in `infrastructure`
   (`UserJpaEntity`/`BCryptPasswordHasher`), never touching the domain or application

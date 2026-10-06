@@ -5,6 +5,7 @@ import com.agencyvoyage.infrastructure.messaging.kafka.dto.GroupBookingFinalized
 import com.agencyvoyage.infrastructure.messaging.kafka.dto.ParticipantJoinedMessage;
 import com.agencyvoyage.infrastructure.messaging.kafka.dto.ParticipantLeftMessage;
 import java.util.Objects;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +15,13 @@ import org.springframework.stereotype.Component;
  * {@code NotificationKafkaListener} - each subscriber (this bridge, the notification
  * log) gets every message independently, which is exactly what Kafka consumer groups
  * are for.
+ *
+ * <p>Only active when {@code agency-voyage.kafka.enabled} is true (the default); see
+ * {@link InProcessGroupBookingEventPublisher} for the no-Kafka alternative, which
+ * broadcasts directly instead of via this bridge.
  */
 @Component
+@ConditionalOnProperty(prefix = "agency-voyage.kafka", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class GroupBookingKafkaBridge {
 
     private final GroupBookingEventBroadcaster broadcaster;

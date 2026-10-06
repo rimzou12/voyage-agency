@@ -10,6 +10,7 @@ import com.agencyvoyage.infrastructure.messaging.kafka.dto.GroupBookingFinalized
 import com.agencyvoyage.infrastructure.messaging.kafka.dto.ParticipantJoinedMessage;
 import com.agencyvoyage.infrastructure.messaging.kafka.dto.ParticipantLeftMessage;
 import java.util.Objects;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +19,12 @@ import org.springframework.stereotype.Component;
  * own consumer group, independent of {@link NotificationKafkaListener} and the SSE
  * bridge, so a slow or failing consumer elsewhere never delays this from recording
  * history.
+ *
+ * <p>Only active when {@code agency-voyage.kafka.enabled} is true (the default); see
+ * {@code InProcessGroupBookingEventPublisher} for the no-Kafka alternative.
  */
 @Component
+@ConditionalOnProperty(prefix = "agency-voyage.kafka", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class AuditTrailKafkaListener {
 
     private final AuditTrailRepository auditTrailRepository;
