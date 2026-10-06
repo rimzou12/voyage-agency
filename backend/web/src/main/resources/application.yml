@@ -34,7 +34,7 @@ agency-voyage:
   jwt:
     # Dev-only default. Override via AGENCY_VOYAGE_JWT_SECRET in any real deployment.
     secret: ${AGENCY_VOYAGE_JWT_SECRET:dev-only-secret-key-change-me-in-production-32+bytes}
-    expiration-ms: 86400000 # 24h
+    expiration-ms: 7200000 # 2h
   admin-seed:
     # Dev-only default admin account, created on startup if it doesn't exist yet.
     # Override both in any real deployment.
