@@ -262,6 +262,13 @@ backend service's Environment tab on Render.
    origin) is wired automatically from the Blueprint.
 4. First deploy takes a few minutes (free-tier Postgres + a from-scratch Docker
    build). After that, every push to `main` redeploys both services automatically.
+5. **Optional - hotel photo uploads.** The admin hotel form can upload an image
+   directly from the browser to [Cloudinary](https://cloudinary.com) instead of
+   pasting a URL by hand. Create a free Cloudinary account, then **Settings → Upload →
+   Upload presets → Add upload preset** with Signing Mode **Unsigned**, and fill in
+   `cloudinaryCloudName`/`cloudinaryUploadPreset` in both
+   `frontend/src/environments/environment.ts` and `environment.prod.ts`. Left blank
+   (the default), the upload button just doesn't render - pasting URLs still works.
 
 **No managed Kafka on Render.** The backend runs with `SPRING_PROFILES_ACTIVE=render`
 there, which disables the Kafka-backed event publisher and listeners in favor of
@@ -382,7 +389,8 @@ into by this work - branches are merged in by hand, in order:
 → `cinematic-editorial-homepage` → `fancy-hero-search-bar` → `custom-search-pill`
 → `admin-dashboard-spacing-polish` → `summer-blue-theme` → `responsive-polish`
 → `admin-hotel-list-responsive` → `hotel-amenities` → `hotel-reviews`
-→ `admin-toasts-and-hotel-cancel` → `render-deploy`
+→ `admin-toasts-and-hotel-cancel` → `render-deploy` → `fix/render-static-site-type`
+→ `hotel-photo-upload`
 
 ## Simplifications and next steps
 
