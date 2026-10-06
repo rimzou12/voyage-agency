@@ -248,7 +248,8 @@ as a static site. Render watches the GitHub repo directly and redeploys on every
 to `main` - GitHub Actions' job is CI only (see [CI](#ci)), not triggering deploys.
 
 **Live:** <https://agency-voyage-frontend.onrender.com>
-Admin login: `rim.zouary@gmail.com` / `rimadmin123`
+Admin credentials: see `AGENCY_VOYAGE_ADMIN_EMAIL`/`AGENCY_VOYAGE_ADMIN_PASSWORD` in the
+backend service's Environment tab on Render.
 
 **First-time setup** (one-off, done by hand on [render.com](https://render.com)):
 
