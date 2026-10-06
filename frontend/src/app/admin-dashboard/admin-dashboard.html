@@ -258,6 +258,28 @@
                     (ngModelChange)="hotelForm.set({ ...hotelForm(), photoUrls: $event })"
                   ></textarea>
                 </mat-form-field>
+                @if (cloudinaryUpload.enabled) {
+                  <div class="photo-upload">
+                    <input
+                      #photoFileInput
+                      type="file"
+                      accept="image/*"
+                      hidden
+                      (change)="uploadHotelPhoto(photoFileInput)"
+                    />
+                    <button
+                      mat-stroked-button
+                      type="button"
+                      [disabled]="uploadingHotelPhoto()"
+                      (click)="photoFileInput.click()"
+                    >
+                      {{ uploadingHotelPhoto() ? i18n.t('admin.uploadingPhoto') : i18n.t('admin.uploadPhoto') }}
+                    </button>
+                    @if (hotelPhotoUploadError()) {
+                      <p class="error">{{ hotelPhotoUploadError() }}</p>
+                    }
+                  </div>
+                }
                 <mat-form-field appearance="outline">
                   <mat-label>{{ i18n.t('admin.amenities') }}</mat-label>
                   <textarea

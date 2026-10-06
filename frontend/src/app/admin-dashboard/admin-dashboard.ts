@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../core/auth.service';
+import { CloudinaryUploadService } from '../core/cloudinary-upload.service';
 import { I18nService } from '../core/i18n.service';
 import { apiErrorMessage } from '../core/group-booking.service';
 import { HotelService } from '../core/hotel.service';
@@ -71,6 +72,7 @@ export class AdminDashboard implements OnInit {
   private readonly tripService = inject(TripService);
   private readonly hotelService = inject(HotelService);
   private readonly snackBar = inject(MatSnackBar);
+  protected readonly cloudinaryUpload = inject(CloudinaryUploadService);
   protected readonly auth = inject(AuthService);
   protected readonly i18n = inject(I18nService);
 
@@ -99,6 +101,8 @@ export class AdminDashboard implements OnInit {
   protected readonly hotelFormError = signal<string | null>(null);
   protected readonly deletingHotelId = signal<string | null>(null);
   protected readonly deleteHotelError = signal<string | null>(null);
+  protected readonly uploadingHotelPhoto = signal(false);
+  protected readonly hotelPhotoUploadError = signal<string | null>(null);
 
   ngOnInit(): void {
     if (!this.auth.currentUser()?.isAdmin) {
@@ -263,6 +267,28 @@ export class AdminDashboard implements OnInit {
   protected cancelHotelForm(): void {
     this.editingHotelId.set(null);
     this.hotelForm.set({ ...BLANK_HOTEL_FORM });
+  }
+
+  protected uploadHotelPhoto(input: HTMLInputElement): void {
+    const file = input.files?.[0];
+    input.value = ''; // allow re-selecting the same file later
+    if (!file) {
+      return;
+    }
+    this.uploadingHotelPhoto.set(true);
+    this.hotelPhotoUploadError.set(null);
+    this.cloudinaryUpload.upload(file).subscribe({
+      next: (url) => {
+        this.uploadingHotelPhoto.set(false);
+        const form = this.hotelForm();
+        const photoUrls = form.photoUrls.trim().length > 0 ? `${form.photoUrls}\n${url}` : url;
+        this.hotelForm.set({ ...form, photoUrls });
+      },
+      error: () => {
+        this.uploadingHotelPhoto.set(false);
+        this.hotelPhotoUploadError.set(this.i18n.t('admin.photoUploadError'));
+      },
+    });
   }
 
   protected submitHotelForm(): void {
