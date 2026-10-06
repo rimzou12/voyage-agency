@@ -247,6 +247,9 @@ root: a free Postgres database, the backend as a Docker web service, and the fro
 as a static site. Render watches the GitHub repo directly and redeploys on every push
 to `main` - GitHub Actions' job is CI only (see [CI](#ci)), not triggering deploys.
 
+**Live:** <https://agency-voyage-frontend.onrender.com>
+Admin login: `rim.zouary@gmail.com` / `rimadmin123`
+
 **First-time setup** (one-off, done by hand on [render.com](https://render.com)):
 
 1. Push this repo to GitHub.
