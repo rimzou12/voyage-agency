@@ -276,11 +276,9 @@
                   >
                     {{ savingHotel() ? i18n.t('admin.saving') : editingHotelId() ? i18n.t('admin.saveChanges') : i18n.t('admin.addHotelSubmit') }}
                   </button>
-                  @if (editingHotelId()) {
-                    <button mat-stroked-button type="button" [disabled]="savingHotel()" (click)="cancelHotelForm()">
-                      {{ i18n.t('admin.cancel') }}
-                    </button>
-                  }
+                  <button mat-stroked-button type="button" [disabled]="savingHotel()" (click)="cancelHotelForm()">
+                    {{ i18n.t('admin.cancel') }}
+                  </button>
                 </div>
                 @if (hotelFormError()) {
                   <p class="error">{{ hotelFormError() }}</p>
