@@ -345,6 +345,7 @@ into by this work - branches are merged in by hand, in order:
 → `cinematic-editorial-homepage` → `fancy-hero-search-bar` → `custom-search-pill`
 → `admin-dashboard-spacing-polish` → `summer-blue-theme` → `responsive-polish`
 → `admin-hotel-list-responsive` → `hotel-amenities` → `hotel-reviews`
+→ `admin-toasts-and-hotel-cancel`
 
 ## Simplifications and next steps
 

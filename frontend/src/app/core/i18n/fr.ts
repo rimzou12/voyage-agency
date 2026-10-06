@@ -88,6 +88,8 @@ export const fr: Record<string, string> = {
   'admin.createTrip': 'Créer le voyage',
   'admin.cancel': 'Annuler',
   'admin.saveTripError': 'Impossible d’enregistrer ce voyage.',
+  'admin.tripCreatedToast': 'Voyage créé.',
+  'admin.tripUpdatedToast': 'Voyage mis à jour.',
   'admin.deleteTripConfirm': 'Supprimer « {{destination}} » ? Cette action est irréversible.',
   'admin.deleteTripError': 'Impossible de supprimer ce voyage.',
   'admin.from': 'à partir de',
@@ -108,6 +110,9 @@ export const fr: Record<string, string> = {
   'admin.amenities': 'Équipements (un par ligne, ex. « Restaurant », « Piscine »)',
   'admin.addHotelSubmit': "Ajouter l'hôtel",
   'admin.saveHotelError': 'Impossible d’enregistrer cet hôtel.',
+  'admin.hotelAddedToast': 'Hôtel ajouté.',
+  'admin.hotelUpdatedToast': 'Hôtel mis à jour.',
+  'admin.dismiss': 'Fermer',
   'admin.deleteHotelConfirm': 'Supprimer « {{name}} » ? Cette action est irréversible.',
 
   // Shared

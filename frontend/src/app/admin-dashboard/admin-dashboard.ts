@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../core/auth.service';
 import { I18nService } from '../core/i18n.service';
 import { apiErrorMessage } from '../core/group-booking.service';
@@ -69,6 +70,7 @@ export class AdminDashboard implements OnInit {
   private readonly router = inject(Router);
   private readonly tripService = inject(TripService);
   private readonly hotelService = inject(HotelService);
+  private readonly snackBar = inject(MatSnackBar);
   protected readonly auth = inject(AuthService);
   protected readonly i18n = inject(I18nService);
 
@@ -104,6 +106,10 @@ export class AdminDashboard implements OnInit {
       return;
     }
     this.refreshTrips();
+  }
+
+  private showToast(message: string): void {
+    this.snackBar.open(message, this.i18n.t('admin.dismiss'), { duration: 4000 });
   }
 
   private refreshTrips(): void {
@@ -176,8 +182,10 @@ export class AdminDashboard implements OnInit {
       next: () => {
         this.savingTrip.set(false);
         this.showTripForm.set(false);
+        const toastKey = editingId ? 'admin.tripUpdatedToast' : 'admin.tripCreatedToast';
         this.editingTripId.set(null);
         this.refreshTrips();
+        this.showToast(this.i18n.t(toastKey));
       },
       error: (err: HttpErrorResponse) => {
         this.savingTrip.set(false);
@@ -288,9 +296,11 @@ export class AdminDashboard implements OnInit {
     request.subscribe({
       next: () => {
         this.savingHotel.set(false);
+        const toastKey = editingId ? 'admin.hotelUpdatedToast' : 'admin.hotelAddedToast';
         this.editingHotelId.set(null);
         this.hotelForm.set({ ...BLANK_HOTEL_FORM });
         this.refreshHotels(tripId);
+        this.showToast(this.i18n.t(toastKey));
       },
       error: (err: HttpErrorResponse) => {
         this.savingHotel.set(false);

@@ -87,6 +87,8 @@ export const en: Record<string, string> = {
   'admin.createTrip': 'Create trip',
   'admin.cancel': 'Cancel',
   'admin.saveTripError': 'Could not save this trip.',
+  'admin.tripCreatedToast': 'Trip created.',
+  'admin.tripUpdatedToast': 'Trip updated.',
   'admin.deleteTripConfirm': 'Delete "{{destination}}"? This cannot be undone.',
   'admin.deleteTripError': 'Could not delete this trip.',
   'admin.from': 'from',
@@ -107,6 +109,9 @@ export const en: Record<string, string> = {
   'admin.amenities': 'Amenities (one per line, e.g. "Restaurant", "Pool")',
   'admin.addHotelSubmit': 'Add hotel',
   'admin.saveHotelError': 'Could not save this hotel.',
+  'admin.hotelAddedToast': 'Hotel added.',
+  'admin.hotelUpdatedToast': 'Hotel updated.',
+  'admin.dismiss': 'Dismiss',
   'admin.deleteHotelConfirm': 'Delete "{{name}}"? This cannot be undone.',
 
   // Shared
