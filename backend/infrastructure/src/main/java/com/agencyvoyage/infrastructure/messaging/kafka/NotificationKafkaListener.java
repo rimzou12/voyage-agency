@@ -5,6 +5,7 @@ import com.agencyvoyage.infrastructure.messaging.kafka.dto.ParticipantJoinedMess
 import com.agencyvoyage.infrastructure.messaging.kafka.dto.ParticipantLeftMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +14,12 @@ import org.springframework.stereotype.Component;
  * real system this consumer would live in its own service, reading the same topics to
  * email/SMS customers. Kept here, logging only, to demonstrate the event flow end to
  * end without building a second deployable for this pass.
+ *
+ * <p>Only active when {@code agency-voyage.kafka.enabled} is true (the default); see
+ * {@code InProcessGroupBookingEventPublisher} for the no-Kafka alternative.
  */
 @Component
+@ConditionalOnProperty(prefix = "agency-voyage.kafka", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class NotificationKafkaListener {
 
     private static final Logger log = LoggerFactory.getLogger(NotificationKafkaListener.class);

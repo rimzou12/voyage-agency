@@ -1,0 +1,66 @@
+# Render Blueprint - provisions the whole deployed app in one go.
+# To use: push this repo to GitHub, then on Render choose
+# "New +" -> "Blueprint" and point it at the repo. Render reads this file and creates
+# everything below; it then auto-deploys on every push to main (see README).
+#
+# No managed Kafka on Render - the backend runs with SPRING_PROFILES_ACTIVE=render,
+# which disables the Kafka-backed event publisher/listeners in favor of an in-process
+# equivalent (see backend/web/src/main/resources/application-render.yml and
+# InProcessGroupBookingEventPublisher). Kafka itself stays local-only, via
+# docker-compose, for development.
+databases:
+  - name: agency-voyage-db
+    databaseName: agencyvoyage
+    user: agencyvoyage
+    plan: free
+
+services:
+  - type: web
+    name: agency-voyage-backend
+    env: docker
+    repo: https://github.com/rimzou12/voyage-agency.git
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /api/trips
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DB_HOST
+        fromDatabase:
+          name: agency-voyage-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: agency-voyage-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: agency-voyage-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: agency-voyage-db
+          property: user
+      - key: DB_PASS
+        fromDatabase:
+          name: agency-voyage-db
+          property: password
+      - key: AGENCY_VOYAGE_JWT_SECRET
+        generateValue: true
+      - key: AGENCY_VOYAGE_ADMIN_EMAIL
+        sync: false
+      - key: AGENCY_VOYAGE_ADMIN_PASSWORD
+        sync: false
+      - key: AGENCY_VOYAGE_CORS_ALLOWED_ORIGINS
+        value: https://agency-voyage-frontend.onrender.com
+
+  - type: static
+    name: agency-voyage-frontend
+    repo: https://github.com/rimzou12/voyage-agency.git
+    buildCommand: cd frontend && npm ci && npm run build -- --configuration production
+    staticPublishPath: frontend/dist/frontend/browser
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
