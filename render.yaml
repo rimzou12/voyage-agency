@@ -55,8 +55,9 @@ services:
       - key: AGENCY_VOYAGE_CORS_ALLOWED_ORIGINS
         value: https://agency-voyage-frontend.onrender.com
 
-  - type: static
+  - type: web
     name: agency-voyage-frontend
+    runtime: static
     repo: https://github.com/rimzou12/voyage-agency.git
     buildCommand: cd frontend && npm ci && npm run build -- --configuration production
     staticPublishPath: frontend/dist/frontend/browser
