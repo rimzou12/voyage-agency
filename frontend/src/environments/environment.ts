@@ -6,6 +6,6 @@ export const environment = {
   // with Signing Mode "Unsigned", and fill in both values below (and in
   // environment.prod.ts). Leave blank to disable the upload button (falls back to
   // pasting URLs by hand).
-  cloudinaryCloudName: '',
-  cloudinaryUploadPreset: '',
+  cloudinaryCloudName: 'm7pnmofu',
+  cloudinaryUploadPreset: 'photosu',
 };
