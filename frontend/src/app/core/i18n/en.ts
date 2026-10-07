@@ -5,6 +5,7 @@ export const en: Record<string, string> = {
   'nav.logOut': 'Log out',
   'nav.logIn': 'Log in',
   'nav.register': 'Register',
+  'nav.sessionExpired': 'Your session has expired. Please log in again.',
 
   // Footer
   'footer.tagline': 'Group trips, organized together.',
