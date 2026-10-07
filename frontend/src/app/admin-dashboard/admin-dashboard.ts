@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../core/auth.service';
 import { CloudinaryUploadService } from '../core/cloudinary-upload.service';
 import { I18nService } from '../core/i18n.service';
@@ -62,6 +63,7 @@ const BLANK_HOTEL_FORM: HotelFormState = { name: '', description: '', photoUrls:
     MatIconModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatTooltipModule,
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss',

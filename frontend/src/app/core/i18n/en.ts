@@ -103,6 +103,7 @@ export const en: Record<string, string> = {
   'admin.deleteHotelError': 'Could not delete this hotel.',
   'admin.editHotel': 'Edit hotel',
   'admin.addHotel': 'Add a hotel',
+  'admin.backToHotels': 'Back to hotels',
   'admin.hotelName': 'Name',
   'admin.hotelDescription': 'Description',
   'admin.photoUrls': 'Photo URLs (one per line)',
