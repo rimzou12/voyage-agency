@@ -391,7 +391,7 @@ into by this work - branches are merged in by hand, in order:
 → `admin-hotel-list-responsive` → `hotel-amenities` → `hotel-reviews`
 → `admin-toasts-and-hotel-cancel` → `render-deploy` → `fix/render-static-site-type`
 → `hotel-photo-upload` → `cloudinary-credentials` → `hotel-form-back-button`
-→ `trip-photo-upload`
+→ `trip-photo-upload` → `trip-date-calendar-picker`
 
 ## Simplifications and next steps
 
