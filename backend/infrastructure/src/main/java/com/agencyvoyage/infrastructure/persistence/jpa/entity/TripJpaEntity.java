@@ -8,6 +8,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OrderBy;
+import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -52,6 +53,12 @@ public class TripJpaEntity {
     @OrderBy("minParticipants ASC")
     private List<PriceTierEmbeddable> priceTiers = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "trip_photo_url", joinColumns = @JoinColumn(name = "trip_id"))
+    @OrderColumn(name = "position")
+    @Column(name = "url", nullable = false)
+    private List<String> photoUrls = new ArrayList<>();
+
     protected TripJpaEntity() {
         // JPA
     }
@@ -66,7 +73,8 @@ public class TripJpaEntity {
             int maxParticipants,
             Instant bookingDeadline,
             BigDecimal basePrice,
-            List<PriceTierEmbeddable> priceTiers) {
+            List<PriceTierEmbeddable> priceTiers,
+            List<String> photoUrls) {
         this.id = id;
         this.destination = destination;
         this.description = description;
@@ -77,6 +85,7 @@ public class TripJpaEntity {
         this.bookingDeadline = bookingDeadline;
         this.basePrice = basePrice;
         this.priceTiers = new ArrayList<>(priceTiers);
+        this.photoUrls = new ArrayList<>(photoUrls);
     }
 
     public UUID getId() {
@@ -117,5 +126,9 @@ public class TripJpaEntity {
 
     public List<PriceTierEmbeddable> getPriceTiers() {
         return priceTiers;
+    }
+
+    public List<String> getPhotoUrls() {
+        return photoUrls;
     }
 }

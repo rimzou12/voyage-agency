@@ -21,6 +21,7 @@ public final class Trip {
     private final int maxParticipants;
     private final Instant bookingDeadline;
     private final PricingSchedule pricingSchedule;
+    private final List<String> photoUrls;
 
     public Trip(
             TripId id,
@@ -31,7 +32,8 @@ public final class Trip {
             int minParticipants,
             int maxParticipants,
             Instant bookingDeadline,
-            PricingSchedule pricingSchedule) {
+            PricingSchedule pricingSchedule,
+            List<String> photoUrls) {
         this.id = Objects.requireNonNull(id, "id must not be null");
         this.destination = requireNonBlank(destination, "destination");
         this.description = description == null ? "" : description;
@@ -39,6 +41,7 @@ public final class Trip {
         this.returnDate = Objects.requireNonNull(returnDate, "returnDate must not be null");
         this.bookingDeadline = Objects.requireNonNull(bookingDeadline, "bookingDeadline must not be null");
         this.pricingSchedule = Objects.requireNonNull(pricingSchedule, "pricingSchedule must not be null");
+        this.photoUrls = photoUrls == null ? List.of() : List.copyOf(photoUrls);
 
         if (!departureDate.isBefore(returnDate)) {
             throw new IllegalArgumentException("departureDate must be before returnDate");
@@ -103,6 +106,10 @@ public final class Trip {
 
     public List<PriceTier> priceTiers() {
         return pricingSchedule.tiers();
+    }
+
+    public List<String> photoUrls() {
+        return photoUrls;
     }
 
     @Override

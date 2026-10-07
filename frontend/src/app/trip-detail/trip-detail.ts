@@ -63,7 +63,10 @@ export class TripDetail {
   protected readonly createError = signal<string | null>(null);
   protected readonly photos = computed(() => {
     const trip = this.trip();
-    return trip ? tripPhotoUrls(trip.id, 6) : [];
+    if (!trip) {
+      return [];
+    }
+    return trip.photoUrls.length > 0 ? trip.photoUrls : tripPhotoUrls(trip.id, 6);
   });
 
   protected readonly hotels = signal<Hotel[]>([]);

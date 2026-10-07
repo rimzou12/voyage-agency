@@ -14,6 +14,7 @@ export interface Trip {
   bookingDeadline: string;
   basePrice: number;
   priceTiers: PriceTier[];
+  photoUrls: string[];
 }
 
 export type GroupBookingStatus = 'OPEN' | 'CONFIRMED' | 'CANCELLED';

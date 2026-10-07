@@ -18,10 +18,12 @@ public record CreateTripCommand(
         Instant bookingDeadline,
         BigDecimal basePrice,
         List<PriceTier> priceTiers,
+        List<String> photoUrls,
         User requestedBy) {
 
     public CreateTripCommand {
         Objects.requireNonNull(requestedBy, "requestedBy must not be null");
         priceTiers = priceTiers == null ? List.of() : List.copyOf(priceTiers);
+        photoUrls = photoUrls == null ? List.of() : List.copyOf(photoUrls);
     }
 }

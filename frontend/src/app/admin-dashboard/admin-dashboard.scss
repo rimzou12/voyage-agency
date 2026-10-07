@@ -106,6 +106,10 @@ h1 {
       grid-column: span 2;
     }
 
+    .photo-upload {
+      margin-bottom: 0.5rem;
+    }
+
     // Two fixed columns leave each field only ~130px on a narrow phone -
     // too cramped to type or read a number/date in. Below 560px every
     // field (including .span-2 ones) takes the full row instead.

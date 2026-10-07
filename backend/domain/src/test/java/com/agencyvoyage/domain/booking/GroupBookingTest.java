@@ -147,7 +147,8 @@ class GroupBookingTest {
                 1,
                 2,
                 NOW.plus(1, ChronoUnit.DAYS),
-                cheapSchedule);
+                cheapSchedule,
+                List.of());
         GroupBooking booking = GroupBooking.open(GroupBookingId.newId(), cheapTrip, participant("Alice", NOW), NOW);
         ParticipantId aliceId = booking.participants().get(0).id();
 
@@ -425,7 +426,8 @@ class GroupBookingTest {
                 minParticipants,
                 maxParticipants,
                 deadline,
-                schedule);
+                schedule,
+                List.of());
     }
 
     private static Participant participant(String name, Instant joinedAt) {

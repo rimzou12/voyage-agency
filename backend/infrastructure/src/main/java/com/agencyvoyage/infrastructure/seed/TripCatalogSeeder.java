@@ -56,7 +56,8 @@ public class TripCatalogSeeder implements CommandLineRunner {
                                 List.of(
                                         new PriceTier(6, new BigDecimal("1250.00")),
                                         new PriceTier(9, new BigDecimal("1090.00"))),
-                                12)),
+                                12),
+                        List.of()),
                 new Trip(
                         TripId.newId(),
                         "Kyoto, Japan",
@@ -69,7 +70,8 @@ public class TripCatalogSeeder implements CommandLineRunner {
                         PricingSchedule.of(
                                 new BigDecimal("1980.00"),
                                 List.of(new PriceTier(5, new BigDecimal("1690.00"))),
-                                8)),
+                                8),
+                        List.of()),
                 new Trip(
                         TripId.newId(),
                         "Marrakech, Morocco",
@@ -84,6 +86,7 @@ public class TripCatalogSeeder implements CommandLineRunner {
                                 List.of(
                                         new PriceTier(10, new BigDecimal("740.00")),
                                         new PriceTier(15, new BigDecimal("650.00"))),
-                                20)));
+                                20),
+                        List.of()));
     }
 }

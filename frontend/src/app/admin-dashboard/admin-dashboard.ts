@@ -28,6 +28,7 @@ interface TripFormState {
   bookingDeadline: string;
   basePrice: number;
   priceTiers: string;
+  photoUrls: string;
 }
 
 const BLANK_TRIP_FORM: TripFormState = {
@@ -40,6 +41,7 @@ const BLANK_TRIP_FORM: TripFormState = {
   bookingDeadline: '',
   basePrice: 0,
   priceTiers: '',
+  photoUrls: '',
 };
 
 interface HotelFormState {
@@ -89,6 +91,8 @@ export class AdminDashboard implements OnInit {
   protected readonly tripForm = signal<TripFormState>({ ...BLANK_TRIP_FORM });
   protected readonly savingTrip = signal(false);
   protected readonly tripFormError = signal<string | null>(null);
+  protected readonly uploadingTripPhoto = signal(false);
+  protected readonly tripPhotoUploadError = signal<string | null>(null);
 
   protected readonly deletingTripId = signal<string | null>(null);
   protected readonly deleteTripError = signal<string | null>(null);
@@ -153,6 +157,7 @@ export class AdminDashboard implements OnInit {
       bookingDeadline: toDatetimeLocal(trip.bookingDeadline),
       basePrice: trip.basePrice,
       priceTiers: trip.priceTiers.map((t) => `${t.minParticipants},${t.pricePerSeat}`).join('\n'),
+      photoUrls: trip.photoUrls.join('\n'),
     });
     this.tripFormError.set(null);
     this.showTripForm.set(true);
@@ -161,6 +166,28 @@ export class AdminDashboard implements OnInit {
   protected cancelTripForm(): void {
     this.showTripForm.set(false);
     this.editingTripId.set(null);
+  }
+
+  protected uploadTripPhoto(input: HTMLInputElement): void {
+    const file = input.files?.[0];
+    input.value = ''; // allow re-selecting the same file later
+    if (!file) {
+      return;
+    }
+    this.uploadingTripPhoto.set(true);
+    this.tripPhotoUploadError.set(null);
+    this.cloudinaryUpload.upload(file).subscribe({
+      next: (url) => {
+        this.uploadingTripPhoto.set(false);
+        const form = this.tripForm();
+        const photoUrls = form.photoUrls.trim().length > 0 ? `${form.photoUrls}\n${url}` : url;
+        this.tripForm.set({ ...form, photoUrls });
+      },
+      error: () => {
+        this.uploadingTripPhoto.set(false);
+        this.tripPhotoUploadError.set(this.i18n.t('admin.photoUploadError'));
+      },
+    });
   }
 
   protected submitTripForm(): void {
@@ -178,6 +205,10 @@ export class AdminDashboard implements OnInit {
       bookingDeadline: new Date(form.bookingDeadline).toISOString(),
       basePrice: Number(form.basePrice),
       priceTiers: parsePriceTiers(form.priceTiers),
+      photoUrls: form.photoUrls
+        .split(/\r?\n/)
+        .map((url) => url.trim())
+        .filter((url) => url.length > 0),
     };
 
     this.savingTrip.set(true);

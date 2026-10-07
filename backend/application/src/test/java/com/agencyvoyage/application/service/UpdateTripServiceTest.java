@@ -89,7 +89,8 @@ class UpdateTripServiceTest {
                 2,
                 10,
                 Instant.now().plus(21, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
     }
 
     private static UpdateTripCommand command(TripId tripId, User requestedBy) {
@@ -105,6 +106,7 @@ class UpdateTripServiceTest {
                 now.plus(14, ChronoUnit.DAYS),
                 new BigDecimal("1980"),
                 List.of(new PriceTier(5, new BigDecimal("1690"))),
+                List.of(),
                 requestedBy);
     }
 }

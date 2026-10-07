@@ -93,6 +93,9 @@ export class TripList {
   private readonly photosByTripId = new Map<string, string[]>();
 
   protected photos(trip: Trip): string[] {
+    if (trip.photoUrls.length > 0) {
+      return trip.photoUrls;
+    }
     let photos = this.photosByTripId.get(trip.id);
     if (!photos) {
       photos = tripPhotoUrls(trip.id, 4);

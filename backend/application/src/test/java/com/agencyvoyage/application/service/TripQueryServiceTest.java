@@ -64,6 +64,7 @@ class TripQueryServiceTest {
                 2,
                 5,
                 Instant.now().plus(1, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
     }
 }

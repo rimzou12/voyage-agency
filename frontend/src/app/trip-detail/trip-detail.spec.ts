@@ -129,6 +129,7 @@ describe('TripDetail', () => {
       bookingDeadline: '2027-05-01T00:00:00Z',
       basePrice: 1000,
       priceTiers: [{ minParticipants: 5, pricePerSeat: 800 }],
+      photoUrls: [],
     };
   }
 

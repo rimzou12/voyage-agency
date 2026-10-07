@@ -16,7 +16,8 @@ public record TripResponse(
         int maxParticipants,
         Instant bookingDeadline,
         BigDecimal basePrice,
-        List<PriceTierResponse> priceTiers) {
+        List<PriceTierResponse> priceTiers,
+        List<String> photoUrls) {
 
     public static TripResponse from(Trip trip) {
         List<PriceTierResponse> tiers = trip.priceTiers().stream()
@@ -32,6 +33,7 @@ public record TripResponse(
                 trip.maxParticipants(),
                 trip.bookingDeadline(),
                 trip.pricingSchedule().basePrice(),
-                tiers);
+                tiers,
+                trip.photoUrls());
     }
 }
