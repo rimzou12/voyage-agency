@@ -53,22 +53,26 @@
             <mat-label>{{ i18n.t('admin.departureDate') }}</mat-label>
             <input
               matInput
-              type="date"
-              [ngModel]="tripForm().departureDate"
+              [matDatepicker]="departurePicker"
+              [ngModel]="departureDateValue()"
               name="departureDate"
-              (ngModelChange)="tripForm.set({ ...tripForm(), departureDate: $event })"
+              (ngModelChange)="tripForm.set({ ...tripForm(), departureDate: formatIsoDate($event) })"
             />
+            <mat-datepicker-toggle matIconSuffix [for]="departurePicker" />
+            <mat-datepicker #departurePicker />
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>{{ i18n.t('admin.returnDate') }}</mat-label>
             <input
               matInput
-              type="date"
-              [ngModel]="tripForm().returnDate"
+              [matDatepicker]="returnPicker"
+              [ngModel]="returnDateValue()"
               name="returnDate"
-              (ngModelChange)="tripForm.set({ ...tripForm(), returnDate: $event })"
+              (ngModelChange)="tripForm.set({ ...tripForm(), returnDate: formatIsoDate($event) })"
             />
+            <mat-datepicker-toggle matIconSuffix [for]="returnPicker" />
+            <mat-datepicker #returnPicker />
           </mat-form-field>
 
           <mat-form-field appearance="outline">

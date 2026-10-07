@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -61,6 +62,7 @@ const BLANK_HOTEL_FORM: HotelFormState = { name: '', description: '', photoUrls:
     DatePipe,
     FormsModule,
     MatButtonModule,
+    MatDatepickerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
@@ -89,6 +91,11 @@ export class AdminDashboard implements OnInit {
   protected readonly showTripForm = signal(false);
   protected readonly editingTripId = signal<string | null>(null);
   protected readonly tripForm = signal<TripFormState>({ ...BLANK_TRIP_FORM });
+  // Memoized via computed() rather than parsed inline in the template: mat-datepicker's
+  // [ngModel] needs a stable Date reference across change-detection cycles, and calling
+  // parseIsoDate() directly in the template would construct a new Date every cycle.
+  protected readonly departureDateValue = computed(() => this.parseIsoDate(this.tripForm().departureDate));
+  protected readonly returnDateValue = computed(() => this.parseIsoDate(this.tripForm().returnDate));
   protected readonly savingTrip = signal(false);
   protected readonly tripFormError = signal<string | null>(null);
   protected readonly uploadingTripPhoto = signal(false);
@@ -161,6 +168,24 @@ export class AdminDashboard implements OnInit {
     });
     this.tripFormError.set(null);
     this.showTripForm.set(true);
+  }
+
+  /** YYYY-MM-DD -> local midnight Date, for binding a date string to mat-datepicker. */
+  protected parseIsoDate(value: string): Date | null {
+    if (!value) {
+      return null;
+    }
+    const [year, month, day] = value.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  }
+
+  /** Local Date -> YYYY-MM-DD, the inverse of parseIsoDate. */
+  protected formatIsoDate(date: Date | null): string {
+    if (!date) {
+      return '';
+    }
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
   }
 
   protected cancelTripForm(): void {
