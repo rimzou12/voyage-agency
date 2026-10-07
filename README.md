@@ -391,7 +391,8 @@ into by this work - branches are merged in by hand, in order:
 → `admin-hotel-list-responsive` → `hotel-amenities` → `hotel-reviews`
 → `admin-toasts-and-hotel-cancel` → `render-deploy` → `fix/render-static-site-type`
 → `hotel-photo-upload` → `cloudinary-credentials` → `hotel-form-back-button`
-→ `trip-photo-upload` → `trip-date-calendar-picker`
+→ `trip-photo-upload` → `trip-date-calendar-picker` → `fix/hotel-form-cancel-closes-panel`
+→ `feature/auto-logout-on-token-expiry`
 
 ## Simplifications and next steps
 
@@ -418,8 +419,11 @@ Documented deliberately, not accidentally missed:
 - **Trips are seed data, not admin-managed.** `TripCatalogSeeder` inserts a handful of
   sample trips on first startup; there's no create/edit flow for the catalog itself.
 - **Auth is email/password + JWT, no refresh tokens.** `register`/`login` issue a
-  single long-lived (2h) JWT; there's no refresh flow or revocation - logging out just
-  drops the token client-side. `User` stays a pure identity in `domain` (id, email,
+  single long-lived (2h) JWT; there's no refresh flow or server-side revocation. The
+  frontend (`AuthService`) decodes the token's `exp` client-side and automatically logs
+  out (with a toast) exactly when it expires, with a reactive fallback that does the
+  same on any `401` from the API - but a stolen token is still valid until its natural
+  expiry, since there's nothing to revoke it early. `User` stays a pure identity in `domain` (id, email,
   display name); the password hash lives only in `infrastructure`
   (`UserJpaEntity`/`BCryptPasswordHasher`), never touching the domain or application
   layers. "Which participant is me" is now computed server-side on every response
