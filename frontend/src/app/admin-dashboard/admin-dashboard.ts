@@ -323,8 +323,16 @@ export class AdminDashboard implements OnInit {
   }
 
   protected cancelHotelForm(): void {
-    this.editingHotelId.set(null);
-    this.hotelForm.set({ ...BLANK_HOTEL_FORM });
+    if (this.editingHotelId()) {
+      // Mid-edit: back out to the (always-visible) "Add a hotel" form, same panel.
+      this.editingHotelId.set(null);
+      this.hotelForm.set({ ...BLANK_HOTEL_FORM });
+    } else {
+      // Already in "Add a hotel" mode: there's nothing to revert to, so collapse
+      // the whole hotels panel instead - otherwise Cancel looks like it does
+      // nothing when the form is already empty.
+      this.expandedTripId.set(null);
+    }
   }
 
   protected uploadHotelPhoto(input: HTMLInputElement): void {
