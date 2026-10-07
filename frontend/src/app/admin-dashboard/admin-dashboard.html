@@ -130,6 +130,39 @@
               (ngModelChange)="tripForm.set({ ...tripForm(), priceTiers: $event })"
             ></textarea>
           </mat-form-field>
+
+          <mat-form-field appearance="outline" class="span-2">
+            <mat-label>{{ i18n.t('admin.photoUrls') }}</mat-label>
+            <textarea
+              matInput
+              rows="3"
+              [ngModel]="tripForm().photoUrls"
+              name="tripPhotoUrls"
+              (ngModelChange)="tripForm.set({ ...tripForm(), photoUrls: $event })"
+            ></textarea>
+          </mat-form-field>
+          @if (cloudinaryUpload.enabled) {
+            <div class="photo-upload span-2">
+              <input
+                #tripPhotoFileInput
+                type="file"
+                accept="image/*"
+                hidden
+                (change)="uploadTripPhoto(tripPhotoFileInput)"
+              />
+              <button
+                mat-stroked-button
+                type="button"
+                [disabled]="uploadingTripPhoto()"
+                (click)="tripPhotoFileInput.click()"
+              >
+                {{ uploadingTripPhoto() ? i18n.t('admin.uploadingPhoto') : i18n.t('admin.uploadPhoto') }}
+              </button>
+              @if (tripPhotoUploadError()) {
+                <p class="error">{{ tripPhotoUploadError() }}</p>
+              }
+            </div>
+          }
         </div>
 
         <div class="actions">

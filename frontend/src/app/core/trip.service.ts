@@ -14,6 +14,7 @@ export interface TripInput {
   bookingDeadline: string;
   basePrice: number;
   priceTiers: PriceTier[];
+  photoUrls: string[];
 }
 
 @Injectable({ providedIn: 'root' })

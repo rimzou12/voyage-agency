@@ -35,7 +35,8 @@ class TripTest {
                         2,
                         10,
                         Instant.now().plus(1, ChronoUnit.DAYS),
-                        SCHEDULE))
+                        SCHEDULE,
+                        List.of()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("departureDate");
     }
@@ -51,7 +52,8 @@ class TripTest {
                         10,
                         5,
                         Instant.now().plus(1, ChronoUnit.DAYS),
-                        SCHEDULE))
+                        SCHEDULE,
+                        List.of()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("maxParticipants");
     }
@@ -67,7 +69,8 @@ class TripTest {
                         2,
                         10,
                         Instant.now().plus(1, ChronoUnit.DAYS),
-                        SCHEDULE))
+                        SCHEDULE,
+                        List.of()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("destination");
     }
@@ -82,6 +85,7 @@ class TripTest {
                 2,
                 10,
                 deadline,
-                SCHEDULE);
+                SCHEDULE,
+                List.of());
     }
 }

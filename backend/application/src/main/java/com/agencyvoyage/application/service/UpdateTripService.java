@@ -37,7 +37,8 @@ public final class UpdateTripService implements UpdateTripUseCase {
                 command.minParticipants(),
                 command.maxParticipants(),
                 command.bookingDeadline(),
-                schedule);
+                schedule,
+                command.photoUrls());
         tripRepository.save(trip);
         return trip;
     }

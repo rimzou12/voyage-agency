@@ -27,7 +27,8 @@ public final class TripMapper {
                 trip.maxParticipants(),
                 trip.bookingDeadline(),
                 trip.pricingSchedule().basePrice(),
-                tiers);
+                tiers,
+                trip.photoUrls());
     }
 
     public static Trip toDomain(TripJpaEntity entity) {
@@ -44,6 +45,7 @@ public final class TripMapper {
                 entity.getMinParticipants(),
                 entity.getMaxParticipants(),
                 entity.getBookingDeadline(),
-                schedule);
+                schedule,
+                entity.getPhotoUrls());
     }
 }

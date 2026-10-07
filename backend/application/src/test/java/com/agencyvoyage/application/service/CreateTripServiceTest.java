@@ -72,6 +72,7 @@ class CreateTripServiceTest {
                 now.plus(21, ChronoUnit.DAYS),
                 new BigDecimal("1000"),
                 List.of(new PriceTier(5, new BigDecimal("800"))),
+                List.of(),
                 requestedBy);
     }
 }

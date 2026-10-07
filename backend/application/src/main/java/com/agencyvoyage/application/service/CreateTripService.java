@@ -34,7 +34,8 @@ public final class CreateTripService implements CreateTripUseCase {
                 command.minParticipants(),
                 command.maxParticipants(),
                 command.bookingDeadline(),
-                schedule);
+                schedule,
+                command.photoUrls());
         tripRepository.save(trip);
         return trip;
     }

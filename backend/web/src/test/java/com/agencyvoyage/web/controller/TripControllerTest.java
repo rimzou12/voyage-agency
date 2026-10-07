@@ -205,6 +205,7 @@ class TripControllerTest {
                 2,
                 5,
                 Instant.now().plus(30, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
     }
 }

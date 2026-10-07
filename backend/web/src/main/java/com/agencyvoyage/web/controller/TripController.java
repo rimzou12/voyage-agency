@@ -74,6 +74,7 @@ public class TripController {
                 request.bookingDeadline(),
                 request.basePrice(),
                 toPriceTiers(request),
+                request.photoUrls(),
                 currentUser));
         return ResponseEntity.status(HttpStatus.CREATED).body(TripResponse.from(trip));
     }
@@ -92,6 +93,7 @@ public class TripController {
                 request.bookingDeadline(),
                 request.basePrice(),
                 toPriceTiers(request),
+                request.photoUrls(),
                 currentUser));
         return TripResponse.from(trip);
     }

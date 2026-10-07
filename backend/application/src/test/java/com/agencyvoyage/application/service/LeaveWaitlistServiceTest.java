@@ -89,7 +89,8 @@ class LeaveWaitlistServiceTest {
                 1,
                 1,
                 NOW.plus(1, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
         Participant creator = new Participant(ParticipantId.newId(), UserId.newId(), "Alice", NOW);
         return GroupBooking.open(GroupBookingId.newId(), trip, creator, NOW);
     }

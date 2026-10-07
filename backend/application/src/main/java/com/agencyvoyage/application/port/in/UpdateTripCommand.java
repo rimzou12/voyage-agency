@@ -20,11 +20,13 @@ public record UpdateTripCommand(
         Instant bookingDeadline,
         BigDecimal basePrice,
         List<PriceTier> priceTiers,
+        List<String> photoUrls,
         User requestedBy) {
 
     public UpdateTripCommand {
         Objects.requireNonNull(tripId, "tripId must not be null");
         Objects.requireNonNull(requestedBy, "requestedBy must not be null");
         priceTiers = priceTiers == null ? List.of() : List.copyOf(priceTiers);
+        photoUrls = photoUrls == null ? List.of() : List.copyOf(photoUrls);
     }
 }

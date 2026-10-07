@@ -14,4 +14,5 @@ public record TripRequest(
         int maxParticipants,
         Instant bookingDeadline,
         BigDecimal basePrice,
-        List<PriceTierRequest> priceTiers) {}
+        List<PriceTierRequest> priceTiers,
+        List<String> photoUrls) {}

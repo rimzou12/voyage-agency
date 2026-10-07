@@ -126,7 +126,8 @@ class RequestHotelReservationServiceTest {
                 1,
                 5,
                 NOW.plus(1, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
     }
 
     private static Participant participant(String name) {

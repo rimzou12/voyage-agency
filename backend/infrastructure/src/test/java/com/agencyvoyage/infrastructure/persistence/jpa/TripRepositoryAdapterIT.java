@@ -91,7 +91,8 @@ class TripRepositoryAdapterIT extends AbstractPostgresIT {
                 trip.minParticipants(),
                 trip.maxParticipants(),
                 trip.bookingDeadline(),
-                updatedSchedule);
+                updatedSchedule,
+                List.of());
         adapter.save(updated);
 
         Trip reloaded = adapter.findById(trip.id()).orElseThrow();
@@ -114,6 +115,7 @@ class TripRepositoryAdapterIT extends AbstractPostgresIT {
                 2,
                 10,
                 Instant.now().plus(30, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
     }
 }

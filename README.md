@@ -390,7 +390,8 @@ into by this work - branches are merged in by hand, in order:
 → `admin-dashboard-spacing-polish` → `summer-blue-theme` → `responsive-polish`
 → `admin-hotel-list-responsive` → `hotel-amenities` → `hotel-reviews`
 → `admin-toasts-and-hotel-cancel` → `render-deploy` → `fix/render-static-site-type`
-→ `hotel-photo-upload`
+→ `hotel-photo-upload` → `cloudinary-credentials` → `hotel-form-back-button`
+→ `trip-photo-upload`
 
 ## Simplifications and next steps
 
@@ -424,10 +425,12 @@ Documented deliberately, not accidentally missed:
   layers. "Which participant is me" is now computed server-side on every response
   (`GroupBookingResponse.myParticipantId`) from the caller's authenticated `UserId`,
   replacing the earlier `localStorage`-based heuristic.
-- **Trip photos are stand-in placeholders, not real destination photography.** The
-  frontend's `tripPhotoUrls` generates a deterministic picsum.photos set per trip id
-  (same trip always gets the same photos) so the carousels have something to show;
-  there's no real photo library or upload flow wired up.
+- **Trip photos fall back to placeholders until an admin uploads real ones.** Trips
+  and hotels both have a real `photoUrls` field, populated either by pasting URLs or
+  via the Cloudinary "Upload photo" button in the admin dashboard. Until a trip has
+  any, the frontend's `tripPhotoUrls` fills in with a deterministic picsum.photos set
+  per trip id (same trip always gets the same placeholder photos) so the carousels
+  always have something to show.
 - **English/French translation covers every page except backend-returned error
   text.** The header nav/footer, trip list, login/register, chat widget, admin
   dashboard, trip detail, and group-booking detail (join/leave, waitlist, referrals,

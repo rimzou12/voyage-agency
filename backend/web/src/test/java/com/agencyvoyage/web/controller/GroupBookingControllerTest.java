@@ -373,7 +373,8 @@ class GroupBookingControllerTest {
                 2,
                 5,
                 Instant.now().plus(30, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
         Participant creator = new Participant(ParticipantId.newId(), creatorUserId, "Alice", Instant.now());
         return GroupBooking.reconstitute(
                 id,
@@ -400,7 +401,8 @@ class GroupBookingControllerTest {
                 2,
                 5,
                 Instant.now().plus(30, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
         Participant referrer = new Participant(ParticipantId.newId(), referrerUserId, "Alice", Instant.now());
         Participant referred = new Participant(
                 ParticipantId.newId(), UserId.newId(), "Bob", Instant.now(), referrer.id());
@@ -429,7 +431,8 @@ class GroupBookingControllerTest {
                 1,
                 1,
                 Instant.now().plus(30, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
         Participant creator = new Participant(ParticipantId.newId(), UserId.newId(), "Bob", Instant.now());
         WaitlistEntry entry =
                 new WaitlistEntry(WaitlistEntryId.newId(), waitlistedUserId, "Alice", Instant.now());

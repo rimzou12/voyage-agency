@@ -194,7 +194,8 @@ class GroupBookingRepositoryAdapterIT extends AbstractPostgresIT {
                 2,
                 10,
                 deadline,
-                schedule);
+                schedule,
+                List.of());
     }
 
     private static Trip fullTrip(Instant deadline) {
@@ -208,6 +209,7 @@ class GroupBookingRepositoryAdapterIT extends AbstractPostgresIT {
                 1,
                 1,
                 deadline,
-                schedule);
+                schedule,
+                List.of());
     }
 }

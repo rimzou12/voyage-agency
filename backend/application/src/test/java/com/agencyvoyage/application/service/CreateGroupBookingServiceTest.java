@@ -94,6 +94,7 @@ class CreateGroupBookingServiceTest {
                 2,
                 5,
                 NOW.plus(1, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
     }
 }

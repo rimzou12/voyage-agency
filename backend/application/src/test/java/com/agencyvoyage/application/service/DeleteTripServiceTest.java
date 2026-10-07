@@ -82,6 +82,7 @@ class DeleteTripServiceTest {
                 2,
                 10,
                 Instant.now().plus(21, ChronoUnit.DAYS),
-                schedule);
+                schedule,
+                List.of());
     }
 }

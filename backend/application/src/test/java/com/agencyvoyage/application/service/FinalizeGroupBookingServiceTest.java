@@ -99,7 +99,8 @@ class FinalizeGroupBookingServiceTest {
                 minParticipants,
                 maxParticipants,
                 DEADLINE,
-                schedule);
+                schedule,
+                List.of());
         Participant creator =
                 new Participant(ParticipantId.newId(), UserId.newId(), "Alice", DEADLINE.minusSeconds(60));
         return GroupBooking.open(GroupBookingId.newId(), trip, creator, DEADLINE.minusSeconds(60));
