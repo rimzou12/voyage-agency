@@ -229,7 +229,19 @@
               }
 
               <form class="hotel-form" (submit)="$event.preventDefault(); submitHotelForm()">
-                <h4>{{ editingHotelId() ? i18n.t('admin.editHotel') : i18n.t('admin.addHotel') }}</h4>
+                <div class="hotel-form-header">
+                  <button
+                    mat-icon-button
+                    type="button"
+                    [disabled]="savingHotel()"
+                    (click)="cancelHotelForm()"
+                    [attr.aria-label]="i18n.t('admin.backToHotels')"
+                    [matTooltip]="i18n.t('admin.backToHotels')"
+                  >
+                    <mat-icon>arrow_back</mat-icon>
+                  </button>
+                  <h4>{{ editingHotelId() ? i18n.t('admin.editHotel') : i18n.t('admin.addHotel') }}</h4>
+                </div>
                 <mat-form-field appearance="outline">
                   <mat-label>{{ i18n.t('admin.hotelName') }}</mat-label>
                   <input

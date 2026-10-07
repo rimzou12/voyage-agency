@@ -104,6 +104,7 @@ export const fr: Record<string, string> = {
   'admin.deleteHotelError': 'Impossible de supprimer cet hôtel.',
   'admin.editHotel': "Modifier l'hôtel",
   'admin.addHotel': 'Ajouter un hôtel',
+  'admin.backToHotels': 'Retour aux hôtels',
   'admin.hotelName': 'Nom',
   'admin.hotelDescription': 'Description',
   'admin.photoUrls': 'URLs des photos (une par ligne)',
