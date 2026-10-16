@@ -293,6 +293,13 @@ demo deployment, not for production traffic.
 
 ## API
 
+Interactive docs (Swagger UI, generated from the real controllers via springdoc-openapi):
+`http://localhost:8080/swagger-ui.html` locally, or
+<https://agency-voyage-backend.onrender.com/swagger-ui.html> on the live deployment. Raw
+OpenAPI JSON at `/v3/api-docs`. Both are public - no login needed to browse or try the
+public (non-admin) endpoints; the "Authorize" button accepts a JWT from
+`/api/auth/login` for the ones that need one.
+
 | Method | Path                                     | Auth | Description                          |
 |--------|-------------------------------------------|------|---------------------------------------|
 | POST   | `/api/auth/register`                      | -    | Create an account (`{email, password, displayName}`) → `{token, user}` |
@@ -402,6 +409,7 @@ into by this work - branches are merged in by hand, in order:
 → `hotel-photo-upload` → `cloudinary-credentials` → `hotel-form-back-button`
 → `trip-photo-upload` → `trip-date-calendar-picker` → `fix/hotel-form-cancel-closes-panel`
 → `feature/auto-logout-on-token-expiry` → `feature/neon-postgres`
+→ `feature/openapi-swagger-ui`
 
 ## Simplifications and next steps
 
