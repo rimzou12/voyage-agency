@@ -18,7 +18,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
  * resolves to {@code null} rather than Spring Security's usual "anonymousUser" string).
  * Browsing (trips, a booking's state, its SSE stream, hotel reviews) stays public;
  * creating, joining, or leaving a group booking - and writing a hotel review -
- * requires a valid token.
+ * requires a valid token. The OpenAPI docs and Swagger UI are public too, same
+ * reasoning as browsing - see OpenApiConfig.
  */
 @Configuration
 @EnableWebSecurity
@@ -41,6 +42,8 @@ public class SecurityConfig {
                         (request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED)))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                        .permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/trips/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/group-bookings/**").permitAll()
