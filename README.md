@@ -243,9 +243,12 @@ The frontend's API base URL comes from `frontend/src/environments/environment.ts
 ## Deployment
 
 Deployed on [Render](https://render.com) via the `render.yaml` Blueprint at the repo
-root: a free Postgres database, the backend as a Docker web service, and the frontend
-as a static site. Render watches the GitHub repo directly and redeploys on every push
-to `main` - GitHub Actions' job is CI only (see [CI](#ci)), not triggering deploys.
+root: the backend as a Docker web service and the frontend as a static site. The
+database is [Neon](https://neon.tech), not a Render-managed Postgres - Render's free
+Postgres is **deleted after 30 days**, which doesn't work for a database meant to keep
+existing; Neon's free tier has no such expiry. Render watches the GitHub repo directly
+and redeploys on every push to `main` - GitHub Actions' job is CI only (see [CI](#ci)),
+not triggering deploys.
 
 **Live:** <https://agency-voyage-frontend.onrender.com>
 Admin credentials: see `AGENCY_VOYAGE_ADMIN_EMAIL`/`AGENCY_VOYAGE_ADMIN_PASSWORD` in the
@@ -253,16 +256,22 @@ backend service's Environment tab on Render.
 
 **First-time setup** (one-off, done by hand on [render.com](https://render.com)):
 
-1. Push this repo to GitHub.
-2. On Render: **New +** → **Blueprint**, point it at the repo. Render reads
-   `render.yaml` and creates all three services.
-3. Set the two secrets `render.yaml` leaves blank (`sync: false`) on the backend
-   service: `AGENCY_VOYAGE_ADMIN_EMAIL` and `AGENCY_VOYAGE_ADMIN_PASSWORD` - the admin
-   account seeded on first boot. Everything else (DB connection, JWT secret, CORS
-   origin) is wired automatically from the Blueprint.
-4. First deploy takes a few minutes (free-tier Postgres + a from-scratch Docker
-   build). After that, every push to `main` redeploys both services automatically.
-5. **Optional - hotel photo uploads.** The admin hotel form can upload an image
+1. Create a free [Neon](https://neon.tech) Postgres project, and note its host,
+   port, database name, username and password (its Connection Details page).
+2. Push this repo to GitHub.
+3. On Render: **New +** → **Blueprint**, point it at the repo. Render reads
+   `render.yaml` and creates the backend and frontend services (no database - that's
+   Neon, outside Render).
+4. Set the three secrets `render.yaml` leaves blank (`sync: false`) on the backend
+   service: `DB_PASS` (the Neon password from step 1), `AGENCY_VOYAGE_ADMIN_EMAIL` and
+   `AGENCY_VOYAGE_ADMIN_PASSWORD` - the admin account seeded on first boot. If your
+   Neon project's host/port/database/user differ from what's in `render.yaml`
+   (`DB_HOST`/`DB_PORT`/`DB_NAME`/`DB_USER`), update those too. Everything else (JWT
+   secret, CORS origin) is wired automatically from the Blueprint.
+5. First deploy takes a few minutes (Hibernate creates the schema in Neon on first
+   boot, plus a from-scratch Docker build). After that, every push to `main` redeploys
+   both services automatically.
+6. **Optional - hotel photo uploads.** The admin hotel form can upload an image
    directly from the browser to [Cloudinary](https://cloudinary.com) instead of
    pasting a URL by hand. Create a free Cloudinary account, then **Settings → Upload →
    Upload presets → Add upload preset** with Signing Mode **Unsigned**, and fill in
@@ -392,7 +401,7 @@ into by this work - branches are merged in by hand, in order:
 → `admin-toasts-and-hotel-cancel` → `render-deploy` → `fix/render-static-site-type`
 → `hotel-photo-upload` → `cloudinary-credentials` → `hotel-form-back-button`
 → `trip-photo-upload` → `trip-date-calendar-picker` → `fix/hotel-form-cancel-closes-panel`
-→ `feature/auto-logout-on-token-expiry`
+→ `feature/auto-logout-on-token-expiry` → `feature/neon-postgres`
 
 ## Simplifications and next steps
 

@@ -4,6 +4,10 @@
 spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+  datasource:
+    # Neon requires SSL; local dev's docker-compose Postgres doesn't support it, so
+    # this is only appended for the render profile, not the base datasource.url.
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require
 
 agency-voyage:
   kafka:

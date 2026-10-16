@@ -8,12 +8,11 @@
 # equivalent (see backend/web/src/main/resources/application-render.yml and
 # InProcessGroupBookingEventPublisher). Kafka itself stays local-only, via
 # docker-compose, for development.
-databases:
-  - name: agency-voyage-db
-    databaseName: agencyvoyage
-    user: agencyvoyage
-    plan: free
-
+#
+# Database is Neon (https://neon.tech), not a Render-managed Postgres: Render's free
+# Postgres is deleted after 30 days, Neon's free tier isn't. DB_HOST/DB_PORT/DB_NAME/
+# DB_USER below are plain values (not secret on their own); DB_PASS is sync: false -
+# set it directly in the Render dashboard, never commit it.
 services:
   - type: web
     name: agency-voyage-backend
@@ -27,25 +26,15 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: render
       - key: DB_HOST
-        fromDatabase:
-          name: agency-voyage-db
-          property: host
+        value: ep-lively-lab-b55c1hce-pooler.c-7.us-east-2.aws.neon.tech
       - key: DB_PORT
-        fromDatabase:
-          name: agency-voyage-db
-          property: port
+        value: "5432"
       - key: DB_NAME
-        fromDatabase:
-          name: agency-voyage-db
-          property: database
+        value: neondb
       - key: DB_USER
-        fromDatabase:
-          name: agency-voyage-db
-          property: user
+        value: neondb_owner
       - key: DB_PASS
-        fromDatabase:
-          name: agency-voyage-db
-          property: password
+        sync: false
       - key: AGENCY_VOYAGE_JWT_SECRET
         generateValue: true
       - key: AGENCY_VOYAGE_ADMIN_EMAIL
